@@ -12,6 +12,7 @@
     "core-js": "^3.6.4",
     "mdbvue": "^6.7.1",
     "vue": "^2.6.11",
+    "vue-infinite-scroll": "^2.0.2",
     "vue-router": "^3.1.6",
     "vuex": "^3.1.3"
   },

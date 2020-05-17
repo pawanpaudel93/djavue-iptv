@@ -1,7 +1,7 @@
 <template>
   <mdb-navbar expand="large" dark color="stylish">
-    <mdb-navbar-brand href="#">
-      DjaVue IPTV
+    <mdb-navbar-brand tag="div">
+      <router-link :to="{ name: 'Home'}">DjaVue IPTV</router-link>
     </mdb-navbar-brand>
     <mdb-navbar-toggler>
       <mdb-navbar-nav>

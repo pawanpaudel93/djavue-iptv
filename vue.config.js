@@ -8,7 +8,7 @@ module.exports = {
   outputDir: "static/dist",
 
   devServer: {
-    public: "localhost:8080",
+    // public: "localhost:8080",
     headers: {
       "Access-Control-Allow-Origin": "*"
     },

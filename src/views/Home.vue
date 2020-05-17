@@ -1,6 +1,5 @@
 <template>
   <div class="home">
-    <NavBar/>
     <br>
     <span>Choosen By:</span>
     <!-- Group of default radios - option 1 -->
@@ -14,8 +13,8 @@
       <input type="radio" v-model="radioDefault" class="custom-control-input" id="category" name="category" value="category">
       <label class="custom-control-label" for="category">Category</label>
     </div>
-    <Items :items="countries" v-if="radioDefault=='country'"/>
-    <Items :items="categories" v-else/>
+    <Items :items="countries" :type="radioDefault" v-if="radioDefault=='country'"/>
+    <Items :items="categories" :type="radioDefault" v-else/>
   </div>
 </template>
 
@@ -25,9 +24,8 @@
 
 <script>
 // @ is an alias to /src
-import NavBar from "@/components/NavBar.vue";
 import Items from "@/components/Items.vue";
-import { mapGetters } from 'vuex'
+import { mapGetters } from 'vuex';
 
 export default {
   name: "Home",
@@ -37,7 +35,6 @@ export default {
     }
   },
   components: {
-    NavBar,
     Items
   },
   computed: {

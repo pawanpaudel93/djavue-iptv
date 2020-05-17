@@ -43,7 +43,7 @@ export default new Vuex.Store({
     setTvInfos({commit}, infos) {
       axios.get(`/api/iptv/channels/${infos.filterBy}/${infos.name}/`)
         .then(res => {
-          commit('SET_CATEGORIES', res.data)
+          commit('SET_TVINFOS', res.data)
         })
         .catch(error => {
           console.log(error)
