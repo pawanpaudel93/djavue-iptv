@@ -2,6 +2,7 @@ from rest_framework import viewsets, generics
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
+from django.db.models import Count, F
 
 from .serializers import TvInfoSerializer
 from .models import TvInfo
@@ -22,7 +23,10 @@ class ListTitlesView(APIView):
 
     def get(self, request, *args, **kwargs):
         name = self.kwargs['name']
-        return Response({name: TvInfo.objects.order_by(name).values_list(name, flat=True).distinct()})
+        data = {
+            name: TvInfo.objects.annotate(key=F(name)).order_by('key').values('key').annotate(counts=Count('id'))
+        }
+        return Response(data)
 
 
 class RetrieveByNameView(viewsets.ModelViewSet):
