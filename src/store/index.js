@@ -8,7 +8,6 @@ export default new Vuex.Store({
   state: {
     countries: null,
     categories: null,
-    tvInfos: null
   },
   mutations: {
     'SET_COUNTRIES' (state, countries) {
@@ -16,9 +15,6 @@ export default new Vuex.Store({
     },
     'SET_CATEGORIES' (state, categories) {
       state.categories = categories;
-    },
-    'SET_TVINFOS' (state, tvInfos) {
-      state.tvInfos = tvInfos;
     }
   },
   actions: {
@@ -39,16 +35,7 @@ export default new Vuex.Store({
         .catch(error => {
           console.log(error)
         })
-    },
-    setTvInfos({commit}, infos) {
-      axios.get(`/api/iptv/channels/${infos.filterBy}/${infos.name}/`)
-        .then(res => {
-          commit('SET_TVINFOS', res.data)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-  }
+    }
   },
   getters: {
     getCountries (state) {
@@ -56,9 +43,6 @@ export default new Vuex.Store({
     },
     getCategories (state) {
       return state.categories;
-    },
-    getTvInfos (state) {
-      return state.tvInfos;
     }
   }
 });

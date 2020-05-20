@@ -31,6 +31,7 @@ class ListTitlesView(APIView):
 
 class RetrieveByNameView(viewsets.ModelViewSet):
     serializer_class = TvInfoSerializer
+    pagination_class = CustomTvInfoPagination
 
     def get_queryset(self):
         if self.kwargs['filter'] == 'country':

@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <br>
-    <span>Choosen By:</span>
+    <span>View By:</span>
     <!-- Group of default radios - option 1 -->
     <div class="custom-control custom-radio">
       <input type="radio" v-model="radioDefault" class="custom-control-input" id="country" name="country" value="country">

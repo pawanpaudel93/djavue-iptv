@@ -5,15 +5,13 @@ import store from "./store";
 import 'bootstrap-css-only/css/bootstrap.min.css';
 import 'mdbvue/lib/css/mdb.min.css';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import infiniteScroll from 'vue-infinite-scroll';
+import InfiniteLoading from 'vue-infinite-loading';
 import axios from 'axios';
 
-Vue.use(infiniteScroll)
+Vue.use(InfiniteLoading);
 
 axios.defaults.baseURL = process.env.VUE_APP_BASEURL;
 Vue.config.productionTip = false;
-
-var count = 0;
 
 new Vue({
   router,

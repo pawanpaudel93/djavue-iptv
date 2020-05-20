@@ -18,5 +18,8 @@ module.exports = {
     plugins: [
       new BundleTracker({ path: __dirname, filename: "webpack-stats.json" })
     ]
-  }
+  },
+  chainWebpack: config => {
+    config.module.rules.delete('eslint');
+}
 };

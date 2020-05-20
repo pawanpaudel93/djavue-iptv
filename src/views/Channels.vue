@@ -1,8 +1,24 @@
 <template>
 	<mdb-container>
 		<br>
+		<mdb-modal size="lg" :show="showModal" @close="showModal=false" info>
+          <mdb-modal-body class="mb-0 p-0">
+			<Player :source="videoUrl"></Player>
+          </mdb-modal-body>
+          <mdb-modal-footer class="justify-content-center">
+            <span class="mr-4">Spread the word! <i><b>"DjaVue IPTV"</b></i></span>
+            <a class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
+            <!--Twitter-->
+            <a class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+            <!--Google +-->
+            <a class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus"></i></a>
+            <!--Linkedin-->
+            <a class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+            <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
+          </mdb-modal-footer>
+        </mdb-modal>
 		<mdb-row>
-			<mdb-col col="12" sm="6" lg="4" xl="3" v-for="tvInfo in newtvInfos" :key="tvInfo.id">
+			<mdb-col col="12" sm="6" lg="4" xl="3" v-for="tvInfo in tvInfos" :key="tvInfo.id">
 				<mdb-card>
 					<mdb-view hover>
 						<a href="#!">
@@ -13,20 +29,21 @@
 						</a>
 					</mdb-view>
 					<mdb-card-body>
-						<mdb-card-title>{{ tvInfo.name}}</mdb-card-title>
+						<mdb-card-title>{{ tvInfo.name }}</mdb-card-title>
 						<mdb-card-text>
 							Category: {{ tvInfo.category }}
 							Country: {{ tvInfo.country }}
 							Language: {{ tvInfo.language }}
 						</mdb-card-text>
-						<mdb-btn color="unique">Watch</mdb-btn>
+						<mdb-btn color="unique" tag="a" @click="setVideoUrl(tvInfo.url)" data-toggle="modal" data-target="#video-modal">Watch</mdb-btn>
 					</mdb-card-body>
 				</mdb-card>
 			</mdb-col>
 		</mdb-row>
-		<div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="10">...</div>			
+		<infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
 	</mdb-container>
 </template>
+
 
 <style scoped>
 	.card {
@@ -34,16 +51,24 @@
 	}
 </style>
 <script>
-	import { mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, mdbBtn, mdbView, mdbMask, mdbContainer, mdbRow, mdbCol } from 'mdbvue';
-	import { mapGetters } from 'vuex';
+	import { 
+			mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, 
+			mdbBtn, mdbView, mdbMask, mdbContainer, mdbRow, mdbCol,
+			mdbIcon, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbNavItem
+			} from 'mdbvue'
+	import { mapGetters } from 'vuex'
+	import axios from 'axios'
+	import Player from "@/components/Player.vue"
 
-	var count = 0;
 	export default {
 		name: 'Channels',
 		data() {
 			return {
-				newtvInfos: [],
-				busy: false
+				page: 1,
+				next: '',
+				tvInfos: [],
+				showModal: false,
+				videoUrl: ''
 			}
 		},
 		components: {
@@ -57,31 +82,46 @@
 			mdbMask,
 			mdbContainer,
 			mdbRow,
-			mdbCol
-		},
-		computed: {
-			...mapGetters({
-			tvInfos: 'getTvInfos'
-			})
+			mdbCol,
+			// for modal
+			mdbIcon,
+			mdbModal,
+			mdbModalHeader,
+			mdbModalTitle,
+			mdbModalBody,
+			mdbModalFooter,
+			mdbBtn,
+			mdbNavItem,
+
+			Player
 		},
 		  methods: {
-			loadMore: function() {
-				this.busy = true;
-
-				setTimeout(() => {
-					for (var i = 0, j = 50; i < j; i++) {
-						this.newtvInfos.push(this.tvInfos[count++]);
-					}
-					this.busy = false;
-				}, 1000);
+			infiniteHandler($state) {
+				const api = (this.$route.params.name === 'Unknown')?`/api/iptv/channels/${this.$route.params.type}//?page=${this.page}`:`/api/iptv/channels/${this.$route.params.type}/${this.$route.params.name}/?page=${this.page}`
+				if (this.next !== null) {
+					axios.get(api)
+						.then(({ data }) => {
+							if (data.results.length) {
+								this.next = data.next;
+								this.page += 1;
+								this.tvInfos.push(...data.results);
+								$state.loaded();
+							} else {
+								$state.complete();
+							}
+						})
+						.catch(error => {
+							$state.complete();
+						});
+				}
+				else {
+					$state.complete();
+				}
+			},
+			setVideoUrl(url) {
+				this.videoUrl = url;
+				this.showModal=true;
 			}
 		},
-		created() {
-			if (this.$route.params.name == 'Unknown') {
-				this.$store.dispatch('setTvInfos', {filterBy:this.$route.params.type, name: ""});
-			} else {
-				this.$store.dispatch('setTvInfos', {filterBy:this.$route.params.type, name: this.$route.params.name})
-			}
-		}
 	}
 </script>
