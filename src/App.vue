@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <NavBar></NavBar>
-    <br><br>
+    <br><br><br>
     <transition
       name="fade"
       mode="out-in"

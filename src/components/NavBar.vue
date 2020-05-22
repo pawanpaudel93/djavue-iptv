@@ -1,12 +1,13 @@
 <template>
   <mdb-navbar expand="large" dark color="stylish" position="top">
-    <mdb-navbar-brand tag="div">
-      <router-link :to="{ name: 'Home'}">DjaVue IPTV</router-link>
+    <mdb-navbar-brand>
+      <!-- <a @click="$router.push('/')">DjaVue IPTV</a> -->
+      <img src="@/assets/brand.png" class="zoom overlay" height="45px" tag="button" @click="$router.push('/')"/>
     </mdb-navbar-brand>
     <mdb-navbar-toggler>
       <mdb-navbar-nav>
         <mdb-nav-item href="#" active>Home</mdb-nav-item>
-        <mdb-nav-item href="#">Play with url</mdb-nav-item>
+        <mdb-nav-item @click="$router.push('playurl')">Play with url</mdb-nav-item>
         <mdb-dropdown tag="li" class="nav-item">
           <mdb-dropdown-toggle tag="a" navLink color="stylish" slot="toggle" waves-fixed>Dropdown</mdb-dropdown-toggle>
           <mdb-dropdown-menu>
@@ -19,6 +20,12 @@
     </mdb-navbar-toggler>
   </mdb-navbar>
 </template>
+
+<style scoped>
+  img {
+    cursor: pointer;
+  }
+</style>
 
 <script>
   import { mdbDropdown, mdbDropdownToggle, mdbDropdownMenu, mdbDropdownItem, mdbContainer, mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem } from 'mdbvue';

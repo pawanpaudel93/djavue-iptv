@@ -1,45 +1,49 @@
 <template>
-	<mdb-container>
+	<div>
 		<br>
-		<mdb-modal size="lg" :show="showModal" @close="showModal=false" info>
-          <mdb-modal-body class="mb-0 p-0">
-			<Player :source="videoUrl"/>
-          </mdb-modal-body>
-          <mdb-modal-footer class="justify-content-center">
-            <span class="mr-4">Spread the word! <i><b>"DjaVue IPTV"</b></i></span>
-            <a class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
-            <a class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
-            <a class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus"></i></a>
-            <a class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
-            <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
-          </mdb-modal-footer>
-        </mdb-modal>
-		<mdb-row>
-			<mdb-col col="12" sm="6" lg="4" xl="3" v-for="tvInfo in tvInfos" :key="tvInfo.id" style="margin-top: 20px">
-				<mdb-card class="h-100 border-primary">
-					<mdb-view hover cascade>
-						<a href="#!">
-							<v-lazy-image
-								:src="tvInfo.logo"
-								src-placeholder="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg"
-								:alt="tvInfo.name" class="img-fluid"/>
-							<mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
-						</a>
-					</mdb-view>
-					<mdb-card-body>
-						<mdb-card-title>{{ tvInfo.name }}</mdb-card-title>
-						<mdb-card-text>
-							Category: {{ tvInfo.category }}
-							Country: {{ tvInfo.country }}
-							Language: {{ tvInfo.language }}
-						</mdb-card-text>
-						<mdb-btn color="unique" tag="a" @click="setVideoUrl(tvInfo.url)" data-toggle="modal" data-target="#video-modal">Watch</mdb-btn>
-					</mdb-card-body>
-				</mdb-card>
-			</mdb-col>
-		</mdb-row>
-		<infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
-	</mdb-container>
+		<a @click="$router.go(-1)" id="arrow"><i class="fa fa-arrow-left fa-3x"></i></a>
+		<mdb-container>
+			<br><br>
+			<mdb-modal size="lg" :show="showModal" @close="showModal=false" info>
+			<mdb-modal-body class="mb-0 p-0">
+				<Player :source="videoUrl"/>
+			</mdb-modal-body>
+			<mdb-modal-footer class="justify-content-center">
+				<span class="mr-4">Spread the word! <i><b>"DjaVue IPTV"</b></i></span>
+				<a class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
+				<a class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
+				<a class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus"></i></a>
+				<a class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
+				<mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
+			</mdb-modal-footer>
+			</mdb-modal>
+			<mdb-row>
+				<mdb-col col="12" sm="6" lg="4" xl="3" v-for="tvInfo in tvInfos" :key="tvInfo.id" style="margin-top: 20px">
+					<mdb-card class="h-100 border-primary">
+						<mdb-view hover cascade>
+							<a href="#!">
+								<v-lazy-image
+									:src="tvInfo.logo"
+									src-placeholder="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg"
+									:alt="tvInfo.name" class="img-fluid"/>
+								<mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
+							</a>
+						</mdb-view>
+						<mdb-card-body>
+							<mdb-card-title>{{ tvInfo.name }}</mdb-card-title>
+							<mdb-card-text>
+								Category: {{ tvInfo.category }}
+								Country: {{ tvInfo.country }}
+								Language: {{ tvInfo.language }}
+							</mdb-card-text>
+							<mdb-btn color="unique" tag="a" @click="setVideoUrl(tvInfo.url)" data-toggle="modal" data-target="#video-modal">Watch</mdb-btn>
+						</mdb-card-body>
+					</mdb-card>
+				</mdb-col>
+			</mdb-row>
+			<infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+		</mdb-container>
+	</div>
 </template>
 
 
@@ -52,12 +56,21 @@
 		width: 100%;
 	}
 	.v-lazy-image {
-		filter: blur(10px);
+		filter: blur(7px);
 		transition: filter 0.7s;
 		transition-timing-function: ease;
 	}
 	.v-lazy-image-loaded {
 		filter: blur(0);
+	}
+	#arrow {
+		float: left;
+		margin-left:50px;
+		margin-top:20px;
+		/* position: fixed; */
+    	/* top: 70px; */
+		/* right: 5px; */
+		/* left: 0px; */
 	}
 </style>
 <script>

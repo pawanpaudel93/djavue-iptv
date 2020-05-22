@@ -3,17 +3,19 @@
     <br>
     <span>View By:</span>
     <!-- Group of radios-->
-    <div class="custom-control custom-radio">
-      <input type="radio" v-model="radioDefault" class="custom-control-input" id="country" name="country" value="country">
-      <label class="custom-control-label" for="country">Country</label>
-    </div>
-    <div class="custom-control custom-radio">
-      <input type="radio" v-model="radioDefault" class="custom-control-input" id="category" name="category" value="category">
-      <label class="custom-control-label" for="category">Category</label>
-    </div>
-    <div class="custom-control custom-radio">
-      <input type="radio" v-model="radioDefault" class="custom-control-input" id="language" name="language" value="language">
-      <label class="custom-control-label" for="language">Language</label>
+    <div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" v-model="radioDefault" class="custom-control-input" id="country" name="country" value="country">
+        <label class="custom-control-label" for="country">Country</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" v-model="radioDefault" class="custom-control-input" id="category" name="category" value="category">
+        <label class="custom-control-label" for="category">Category</label>
+      </div>
+      <div class="custom-control custom-radio custom-control-inline">
+        <input type="radio" v-model="radioDefault" class="custom-control-input" id="language" name="language" value="language">
+        <label class="custom-control-label" for="language">Language</label>
+      </div>
     </div>
     <Items :items="countries" :type="radioDefault" v-if="radioDefault=='country'"/>
     <Items :items="categories" :type="radioDefault" v-if="radioDefault=='category'"/>
