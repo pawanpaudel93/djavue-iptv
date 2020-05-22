@@ -15,6 +15,7 @@
     "mdbvue": "^6.7.1",
     "plyr": "^3.6.2",
     "postscribe": "^2.0.8",
+    "v-lazy-image": "^1.4.0",
     "vue": "^2.6.11",
     "vue-infinite-loading": "^2.4.5",
     "vue-router": "^3.1.6",

@@ -3,28 +3,26 @@
 		<br>
 		<mdb-modal size="lg" :show="showModal" @close="showModal=false" info>
           <mdb-modal-body class="mb-0 p-0">
-			<Player :source="videoUrl"></Player>
+			<Player :source="videoUrl"/>
           </mdb-modal-body>
           <mdb-modal-footer class="justify-content-center">
             <span class="mr-4">Spread the word! <i><b>"DjaVue IPTV"</b></i></span>
             <a class="btn-floating btn-sm btn-fb"><i class="fab fa-facebook"></i></a>
-            <!--Twitter-->
             <a class="btn-floating btn-sm btn-tw"><i class="fab fa-twitter"></i></a>
-            <!--Google +-->
             <a class="btn-floating btn-sm btn-gplus"><i class="fab fa-google-plus"></i></a>
-            <!--Linkedin-->
             <a class="btn-floating btn-sm btn-ins"><i class="fab fa-linkedin-in"></i></a>
             <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
           </mdb-modal-footer>
         </mdb-modal>
 		<mdb-row>
-			<mdb-col col="12" sm="6" lg="4" xl="3" v-for="tvInfo in tvInfos" :key="tvInfo.id">
-				<mdb-card>
-					<mdb-view hover>
+			<mdb-col col="12" sm="6" lg="4" xl="3" v-for="tvInfo in tvInfos" :key="tvInfo.id" style="margin-top: 20px">
+				<mdb-card class="h-100 border-primary">
+					<mdb-view hover cascade>
 						<a href="#!">
-							<mdb-card-image
-								src="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg"
-								alt="Card image cap"/>
+							<v-lazy-image
+								:src="tvInfo.logo"
+								src-placeholder="https://mdbootstrap.com/img/Photos/Horizontal/Nature/4-col/img%20%282%29.jpg"
+								:alt="tvInfo.name" class="img-fluid"/>
 							<mdb-mask flex-center waves overlay="white-slight"></mdb-mask>
 						</a>
 					</mdb-view>
@@ -46,8 +44,20 @@
 
 
 <style scoped>
-	.card {
-		margin-top: 20px;
+	.view {
+		height: 150px;
+	}
+	.view img {
+		height: 100%;
+		width: 100%;
+	}
+	.v-lazy-image {
+		filter: blur(10px);
+		transition: filter 0.7s;
+		transition-timing-function: ease;
+	}
+	.v-lazy-image-loaded {
+		filter: blur(0);
 	}
 </style>
 <script>
@@ -59,6 +69,7 @@
 	import { mapGetters } from 'vuex'
 	import axios from 'axios'
 	import Player from "@/components/Player.vue"
+	import VLazyImage from "v-lazy-image";
 
 	export default {
 		name: 'Channels',
@@ -92,8 +103,10 @@
 			mdbModalFooter,
 			mdbBtn,
 			mdbNavItem,
-
-			Player
+			// tv player
+			Player,
+			// image lazy loader
+			VLazyImage
 		},
 		  methods: {
 			infiniteHandler($state) {

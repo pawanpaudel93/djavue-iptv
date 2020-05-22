@@ -1,5 +1,5 @@
 <template>
-    <video controls crossorigin playsinline  autoplay poster="https://bitdash-a.akamaihd.net/content/sintel/poster.png" class="embed-responsive-item" ref="player"></video>
+    <video controls crossorigin playsinline autoplay poster="@/assets/djavue_player.png" class="embed-responsive-item" ref="player"></video>
 </template>
 
 <style scoped>

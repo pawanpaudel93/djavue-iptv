@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     countries: null,
     categories: null,
+    languages: null,
   },
   mutations: {
     'SET_COUNTRIES' (state, countries) {
@@ -15,6 +16,9 @@ export default new Vuex.Store({
     },
     'SET_CATEGORIES' (state, categories) {
       state.categories = categories;
+    },
+    'SET_LANGUAGES' (state, languages) {
+      state.languages = languages;
     }
   },
   actions: {
@@ -35,6 +39,15 @@ export default new Vuex.Store({
         .catch(error => {
           console.log(error)
         })
+    },
+    setLanguages ({commit}) {
+      axios.get('/api/iptv/titles/language/')
+        .then(res => {
+          commit('SET_LANGUAGES', res.data.language)
+        })
+        .catch(error => {
+          console.log(error)
+        })
     }
   },
   getters: {
@@ -43,6 +56,9 @@ export default new Vuex.Store({
     },
     getCategories (state) {
       return state.categories;
+    },
+    getLanguages (state) {
+      return state.languages;
     }
   }
 });

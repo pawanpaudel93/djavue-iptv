@@ -2,19 +2,22 @@
   <div class="home">
     <br>
     <span>View By:</span>
-    <!-- Group of default radios - option 1 -->
+    <!-- Group of radios-->
     <div class="custom-control custom-radio">
       <input type="radio" v-model="radioDefault" class="custom-control-input" id="country" name="country" value="country">
       <label class="custom-control-label" for="country">Country</label>
     </div>
-
-    <!-- Group of default radios - option 2 -->
     <div class="custom-control custom-radio">
       <input type="radio" v-model="radioDefault" class="custom-control-input" id="category" name="category" value="category">
       <label class="custom-control-label" for="category">Category</label>
     </div>
+    <div class="custom-control custom-radio">
+      <input type="radio" v-model="radioDefault" class="custom-control-input" id="language" name="language" value="language">
+      <label class="custom-control-label" for="language">Language</label>
+    </div>
     <Items :items="countries" :type="radioDefault" v-if="radioDefault=='country'"/>
-    <Items :items="categories" :type="radioDefault" v-else/>
+    <Items :items="categories" :type="radioDefault" v-if="radioDefault=='category'"/>
+    <Items :items="languages" :type="radioDefault" v-else/>
   </div>
 </template>
 
@@ -40,12 +43,14 @@ export default {
   computed: {
     ...mapGetters({
       categories: 'getCategories',
-      countries: 'getCountries'
+      countries: 'getCountries',
+      languages: 'getLanguages'
     })
   },
   created () {
     this.$store.dispatch('setCategories');
     this.$store.dispatch('setCountries');
+    this.$store.dispatch('setLanguages');
   }
 };
 </script>

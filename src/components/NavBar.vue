@@ -6,8 +6,7 @@
     <mdb-navbar-toggler>
       <mdb-navbar-nav>
         <mdb-nav-item href="#" active>Home</mdb-nav-item>
-        <mdb-nav-item href="#">Link</mdb-nav-item>
-        <mdb-nav-item class="disabled" href="#">Disabled</mdb-nav-item>
+        <mdb-nav-item href="#">Play with url</mdb-nav-item>
         <mdb-dropdown tag="li" class="nav-item">
           <mdb-dropdown-toggle tag="a" navLink color="stylish" slot="toggle" waves-fixed>Dropdown</mdb-dropdown-toggle>
           <mdb-dropdown-menu>

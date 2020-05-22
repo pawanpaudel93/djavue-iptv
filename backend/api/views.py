@@ -38,6 +38,8 @@ class RetrieveByNameView(viewsets.ModelViewSet):
             infos = TvInfo.objects.filter(country__iexact=self.kwargs['name'])
         elif self.kwargs['filter'] == 'category':
             infos = TvInfo.objects.filter(category__iexact=self.kwargs['name'])
-        else:
+        elif self.kwargs['filter'] == 'language':
             infos = TvInfo.objects.filter(language__iexact=self.kwargs['name'])
+        else:
+            infos = TvInfo.objects.all()
         return infos
