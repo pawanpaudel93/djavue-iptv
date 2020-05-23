@@ -2,6 +2,8 @@
 	<div>
 		<Channels :tvInfos="tvInfos" :type="'default'"/>
 		<infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading>
+		<mdb-input label="Enter Url" v-model="url" size="lg"/>
+		<mdb-btn outline="primary" tag="a" @click="setVideoUrl(url)" data-toggle="modal" data-target="#video-modal" :disabled="!$v.url.checkUrl">Watch</mdb-btn>
 	</div>
 </template>
 

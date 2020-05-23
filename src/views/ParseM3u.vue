@@ -1,6 +1,18 @@
 <template>
     <div>
-        <div class="container">
+        <br>
+        <span>Parse By:</span>
+        <div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" v-model="radioDefault" class="custom-control-input" id="File" name="File" value="File">
+                <label class="custom-control-label" for="File">File</label>
+            </div>
+            <div class="custom-control custom-radio custom-control-inline">
+                <input type="radio" v-model="radioDefault" class="custom-control-input" id="URL" name="URL" value="URL">
+                <label class="custom-control-label" for="URL">URL</label>
+            </div>
+        </div>
+        <div class="container" v-if="radioDefault=='File'">
             <div class="form">
                 <div class="large-12 medium-12 small-12 cell">
                     <div class="file-upload-wrapper" :data-text="fileText" ref="filewrapper">
@@ -10,6 +22,8 @@
                 </div>
             </div>
         </div>
+        <mdb-input label="Enter Url" size="lg" v-if="radioDefault=='URL'" class="center" v-model="url"/>
+        <mdb-btn outline="primary" tag="a" @click="handleUrl" v-if="radioDefault=='URL'" :disabled="!$v.url.checkUrl">Parse</mdb-btn>
         <Channels :tvInfos="chunktvInfos" :type="'custom'"/>
         <infinite-loading @infinite="infiniteHandler" spinner="waveDots" v-if="tvInfos.length!=0"></infinite-loading>
     </div>
@@ -32,6 +46,10 @@
         justify-content: center;
         -ms-flex-pack: center;
     }
+    .center {
+        margin: auto;
+        width: 50%;
+    }
     .form {
         width: 400px;
     }
@@ -42,7 +60,7 @@
         position: relative;
         width: 100%;
         height: 60px;
-        border-bottom: 1px solid #4daf7c;
+        border-bottom: 1px solid #4285f4;
     }
     .file-upload-wrapper:after {
         content: attr(data-text);
@@ -69,7 +87,7 @@
         right: 0;
         display: inline-block;
         height: 60px;
-        background: #4daf7c;
+        background:#4285f4;
         color: #fff;
         font-weight: 700;
         z-index: 25;
@@ -81,7 +99,7 @@
         border-radius: 0 5px 5px 0;
     }
     .file-upload-wrapper:hover:before {
-        background: #3d8c63;
+        background: blue;
     }
     .file-upload-wrapper input {
         opacity: 0;
@@ -101,9 +119,14 @@
 </style>
 
 <script>
-    import { mdbBtn } from "mdbvue";
+    import { mdbBtn, mdbContainer, mdbRow, mdbCol, mdbInput } from "mdbvue";
+    import { required,maxLength} from 'vuelidate/lib/validators'
     import axios from "axios"
     import Channels from "@/components/Channels.vue"
+    const checkUrl = (value) => {
+		let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+        return regexp.test(value)? true:false;
+    }
     export default {
         name: "ParseM3u",
         data(){
@@ -112,11 +135,17 @@
                 fileText: "Select your file!",
                 tvInfos: [],
                 chunktvInfos: [],
-                channelStep: 20
+                channelStep: 20,
+                radioDefault: 'File',
+                url: ''
             }
         },
         components: {
             mdbBtn,
+            mdbContainer,
+            mdbRow,
+            mdbCol,
+            mdbInput,
             Channels
         },
         methods: {
@@ -147,6 +176,10 @@
                 this.chunktvInfos = []
                 this.submitFile();
             },
+            handleUrl() {
+                this.tvInfos = []
+                this.chunktvInfos = []
+            },
             infiniteHandler($state) {
                 if (this.chunktvInfos.length === 0) {
                     this.chunktvInfos.push(...this.tvInfos.slice(this.chunktvInfos.length, this.chunktvInfos.length + this.channelStep));
@@ -161,5 +194,12 @@
 				}
 			},
         },
+        validations: {
+			url: {
+				required,
+				maxLength: maxLength(2083),
+				checkUrl
+			},
+		}
     }
 </script>
