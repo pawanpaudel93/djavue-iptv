@@ -19,7 +19,7 @@
     </div>
     <Items :items="countries" :type="radioDefault" v-if="radioDefault=='country'"/>
     <Items :items="categories" :type="radioDefault" v-if="radioDefault=='category'"/>
-    <Items :items="languages" :type="radioDefault" v-else/>
+    <Items :items="languages" :type="radioDefault" v-if="radioDefault=='language'"/>
   </div>
 </template>
 
@@ -34,11 +34,6 @@ import { mapGetters } from 'vuex';
 
 export default {
   name: "Home",
-  data() {
-    return {
-      radioDefault: 'country'
-    }
-  },
   components: {
     Items
   },
@@ -46,12 +41,20 @@ export default {
     ...mapGetters({
       categories: 'getCategories',
       countries: 'getCountries',
-      languages: 'getLanguages'
-    })
+      languages: 'getLanguages',
+    }),
+    radioDefault: {
+      get: function() {
+        return this.$store.getters.getRadioDefault;
+      },
+      set: function(value) {
+        this.$store.commit('SET_RADIO', value);
+      }
+    }
   },
   created () {
-    this.$store.dispatch('setCategories');
     this.$store.dispatch('setCountries');
+    this.$store.dispatch('setCategories');
     this.$store.dispatch('setLanguages');
   }
 };

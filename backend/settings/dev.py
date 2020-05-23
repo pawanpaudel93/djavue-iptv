@@ -141,3 +141,8 @@ WEBPACK_LOADER = {
         "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
     }
 }
+
+# for temporary storing of file
+FILE_UPLOAD_HANDLERS = [
+    'django.core.files.uploadhandler.TemporaryFileUploadHandler',
+]

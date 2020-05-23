@@ -1,13 +1,15 @@
 <template>
   <mdb-navbar expand="large" dark color="stylish" position="top">
     <mdb-navbar-brand>
-      <!-- <a @click="$router.push('/')">DjaVue IPTV</a> -->
-      <img src="@/assets/brand.png" class="zoom overlay" height="45px" tag="button" @click="$router.push('/')"/>
+      <router-link :to="{path: '/'}">
+        <img src="@/assets/brand.png" class="zoom overlay" height="45px"/>
+      </router-link>
     </mdb-navbar-brand>
     <mdb-navbar-toggler>
       <mdb-navbar-nav>
         <mdb-nav-item href="#" active>Home</mdb-nav-item>
-        <mdb-nav-item @click="$router.push('playurl')">Play with url</mdb-nav-item>
+        <router-link :to="{name: 'PlayUrl'}"><mdb-nav-item>Play with url</mdb-nav-item></router-link>
+        <router-link :to="{name: 'ParseM3u'}"><mdb-nav-item>Parse</mdb-nav-item></router-link>
         <mdb-dropdown tag="li" class="nav-item">
           <mdb-dropdown-toggle tag="a" navLink color="stylish" slot="toggle" waves-fixed>Dropdown</mdb-dropdown-toggle>
           <mdb-dropdown-menu>

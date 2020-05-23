@@ -9,6 +9,7 @@ export default new Vuex.Store({
     countries: null,
     categories: null,
     languages: null,
+    radioDefault: 'country'
   },
   mutations: {
     'SET_COUNTRIES' (state, countries) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     'SET_LANGUAGES' (state, languages) {
       state.languages = languages;
+    },
+    'SET_RADIO' (state, name) {
+      state.radioDefault = name;
     }
   },
   actions: {
@@ -59,6 +63,9 @@ export default new Vuex.Store({
     },
     getLanguages (state) {
       return state.languages;
+    },
+    getRadioDefault (state) {
+      return state.radioDefault;
     }
   }
 });

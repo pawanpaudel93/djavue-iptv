@@ -7,6 +7,7 @@ from django.db.models import Count, F
 from .serializers import TvInfoSerializer
 from .models import TvInfo
 from .pagination import CustomTvInfoPagination
+from .m3uParser import M3uParser
 
 
 class ListTvInfoView(viewsets.ModelViewSet):
@@ -43,3 +44,14 @@ class RetrieveByNameView(viewsets.ModelViewSet):
         else:
             infos = TvInfo.objects.all()
         return infos
+
+
+class ParseM3uView(APIView):
+    renderer_classes = [JSONRenderer]
+
+    def post(self, request, *args, **kwargs):
+        file_path = request.FILES['file'].file.name
+        file = M3uParser()
+        file.parse_m3u(file_path)
+        tv_infos = file.get_dict()
+        return Response(tv_infos)

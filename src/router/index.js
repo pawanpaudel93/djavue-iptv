@@ -12,12 +12,12 @@ const routes = [
   },
   {
     path: "/:type/:name",
-    name: "Channels",
+    name: "Tv",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import("@/views/Channels.vue")
+      import("@/views/Tv.vue")
   },
   {
     path: "/playurl",
@@ -27,6 +27,15 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import("@/views/PlayUrl.vue")
+  },
+  {
+    path: "/parsem3u",
+    name: "ParseM3u",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import("@/views/ParseM3u.vue")
   }
 ];
 

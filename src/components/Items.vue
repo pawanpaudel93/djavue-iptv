@@ -2,17 +2,17 @@
     <mdb-container>
         <mdb-row>
             <mdb-col col="12" sm="6" lg="4" xl="3" v-for="item in items" :key="item.key">
-                <router-link :to="{ name: 'Channels', params: { type: type, name: item.key }}" v-if="item.key!=''">
+                <router-link :to="{ name: 'Tv', params: { type: type, name: item.key }}" v-if="item.key!==''">
                   <mdb-list-group-item :action="true"> 
                     {{item.key}}
                     <mdb-badge color="primary" pill>{{ item.counts }}</mdb-badge>
                   </mdb-list-group-item>
                 </router-link>
-                <router-link :to="{ name: 'Channels', params: { type: type, name: 'Unknown' }}" v-else>
+                <router-link :to="{ name: 'Tv', params: { type: type, name: 'Unknown' }}" v-else>
                   <mdb-list-group-item :action="true">
                     Unknown
                   <mdb-badge color="primary" pill>{{ item.counts }}</mdb-badge>
-                </mdb-list-group-item>
+                  </mdb-list-group-item>
                 </router-link>
             </mdb-col>
         </mdb-row>
