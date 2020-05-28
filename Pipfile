@@ -5,7 +5,6 @@ verify_ssl = true
 
 [dev-packages]
 pylint = "*"
-django-extensions = "*"
 ipython = "*"
 jupyter = "*"
 
@@ -24,6 +23,8 @@ pycountry = "*"
 requests = "*"
 django-filter = "*"
 django-cors-headers = "*"
+django-decouple = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.8"

@@ -1,6 +1,6 @@
 """ Production Settings """
 import dj_database_url
-
+from decouple import config
 from .dev import *
 
 ############
@@ -8,7 +8,7 @@ from .dev import *
 ############
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL')
+        default=config('DATABASE_URL')
     )
 }
 
@@ -16,9 +16,8 @@ DATABASES = {
 # SECURITY #
 ############
 
-DEBUG = bool(os.getenv('DJANGO_DEBUG', False))
+DEBUG = config('DJANGO_DEBUG', cast=bool, default=False)
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', SECRET_KEY)
+SECRET_KEY = config('DJANGO_SECRET_KEY')
 
-# Set to your Domain here (eg. 'django-vue-template-demo.herokuapp.com')
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', cast=lambda v: [s.strip() for s in v.split(',')])

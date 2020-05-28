@@ -11,5 +11,5 @@ from backend.api import urls as api_urls
 urlpatterns = [
     path('api/', include(api_urls)),
     path('admin/', admin.site.urls),
-    re_path(r'^.*', TemplateView.as_view(template_name='api/index.html'), name='index'),
+    re_path(r'^.*$', TemplateView.as_view(template_name='api/index.html'), name='index'),
 ]

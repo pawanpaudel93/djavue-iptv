@@ -40,11 +40,11 @@ INSTALLED_APPS = [
     'rest_framework',
     'webpack_loader',
     'backend.api',
-    'corsheaders'
+    'corsheaders',
+    'django_extensions'
 ]
 
 if DEBUG:
-    INSTALLED_APPS += ['django_extensions']
     CORS_ORIGIN_ALLOW_ALL = True
 
 MIDDLEWARE = [
@@ -138,6 +138,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 WEBPACK_LOADER = {
     "DEFAULT": {
         "CACHE": not DEBUG,
+        'BUNDLE_DIR_NAME': '',
         "STATS_FILE": os.path.join(BASE_DIR, "webpack-stats.json"),
     }
 }
