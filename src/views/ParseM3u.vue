@@ -24,6 +24,7 @@
         </div>
         <mdb-input label="Enter Url" size="lg" v-if="radioDefault=='URL'" class="center" v-model="url"/>
         <mdb-btn outline="primary" tag="a" @click="handleUrl" v-if="radioDefault=='URL'" :disabled="!$v.url.checkUrl">Parse</mdb-btn>
+        <br/><p style="float: right; margin-right: 150px; margin-top: 10px;">Total Channels: {{ tvInfos.length }}</p>
         <Channels :tvInfos="chunktvInfos" :type="'custom'"/>
         <infinite-loading @infinite="infiniteHandler" spinner="waveDots" v-if="tvInfos.length!=0"></infinite-loading>
     </div>
@@ -164,8 +165,8 @@
                     this.tvInfos = res.data;
                     this.fileText = "Select your file!"
                 })
-                .catch(()=>{
-                    console.log('FAILURE!!');
+                .catch(err =>{
+                    console.log(err);
                     this.fileText = "Select your file!"
                 });
             },
@@ -179,6 +180,17 @@
             handleUrl() {
                 this.tvInfos = []
                 this.chunktvInfos = []
+                axios.get('/api/parsem3u', {
+                    params: {
+                        url: this.url
+                    }
+                })
+                .then( res => {
+                    this.tvInfos = res.data;
+                })
+                .catch(err => {
+                    console.log(err);
+                })
             },
             infiniteHandler($state) {
                 if (this.chunktvInfos.length === 0) {

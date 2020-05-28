@@ -3,6 +3,7 @@ import json
 import os
 import re
 import urllib3
+import requests
 from random import random
 from urllib.parse import urlparse
 import pycountry
@@ -29,12 +30,13 @@ class M3uParser:
             try:
                 with urllib3.PoolManager() as http:
                     self.content = http.request('GET', url).data.decode('utf-8')
+                # self.content = requests.get(url)
             except:
                 print("Cannot read anything from the url!!!")
                 exit()
         else:
             try:
-                with open(url) as fp:
+                with open(url, errors='ignore') as fp:
                     self.content = fp.read()
             except FileNotFoundError:
                 print("File doesn't exist!!!")
@@ -62,40 +64,50 @@ class M3uParser:
 
     def __manage_line(self, n):
         line_info = self.lines[n]
-        line_link = self.lines[n + 1]
-        if line_info and re.search(re.compile(self.url_regex), line_link):
-            try:
-                tvg_name = is_present(r"tvg-name=\"(.*?)\"", line_info)
-                tvg_id = is_present(r"tvg-id=\"(.*?)\"", line_info)
-                logo = is_present(r"tvg-logo=\"(.*?)\"", line_info)
-                group = is_present(r"group-title=\"(.*?)\"", line_info)
-                title = is_present("[,](?!.*[,])(.*?)$", line_info)
-                country = is_present(r"tvg-country=\"(.*?)\"", line_info)
-                language = is_present(r"tvg-language=\"(.*?)\"", line_info)
-                tvg_url = is_present(r"tvg-url=\"(.*?)\"", line_info)
-                country_name = pycountry.countries.get(alpha_2=country.upper()).name if pycountry.countries.get(alpha_2=country.upper()) else ''
-                language_code = pycountry.languages.get(name=country.capitalize()).alpha_3 if pycountry.languages.get(name=country.capitalize()) else ''
-                self.files.append({
-                    "name": title,
-                    "logo": logo,
-                    "url": line_link,
-                    "category": group,
-                    "language": {
-                        "code": language_code,
-                        "name": language,
-                    },
-                    "country": {
-                        "code": country,
-                        "name": country_name
-                    },
-                    "tvg": {
-                        "id": tvg_id,
-                        "name": tvg_name,
-                        "url": tvg_url,
-                    }
-                })
-            except AttributeError as error:
-                print(error)
+        # line_link = self.lines[n + 1]
+        try:
+            lines_link = []
+            for i in range(1,3):
+                if re.search(re.compile(self.url_regex), self.lines[n+i]):
+                    lines_link.append(self.lines[n+i])
+        except IndexError:
+            pass
+        for line_link in lines_link:
+            if line_info:
+                try:
+                    tvg_name = is_present(r"tvg-name=\"(.*?)\"", line_info)
+                    tvg_id = is_present(r"tvg-id=\"(.*?)\"", line_info)
+                    logo = is_present(r"tvg-logo=\"(.*?)\"", line_info)
+                    group = is_present(r"group-title=\"(.*?)\"", line_info)
+                    title = is_present("[,](?!.*[,])(.*?)$", line_info)
+                    country = is_present(r"tvg-country=\"(.*?)\"", line_info)
+                    language = is_present(r"tvg-language=\"(.*?)\"", line_info)
+                    tvg_url = is_present(r"tvg-url=\"(.*?)\"", line_info)
+                    country_obj = pycountry.countries.get(alpha_2=country.upper())
+                    language_obj = pycountry.languages.get(name=country.capitalize())
+                    country_name = country_obj.name if country_obj else ''
+                    language_code = language_obj.alpha_3 if language_obj else ''
+                    self.files.append({
+                        "name": title,
+                        "logo": logo,
+                        "url": line_link,
+                        "category": group,
+                        "language": {
+                            "code": language_code,
+                            "name": language,
+                        },
+                        "country": {
+                            "code": country,
+                            "name": country_name
+                        },
+                        "tvg": {
+                            "id": tvg_id,
+                            "name": tvg_name,
+                            "url": tvg_url,
+                        }
+                    })
+                except AttributeError:
+                    pass
 
     def filter_by(self, key, filters, retrieve=True):
         if not filters:
@@ -222,12 +234,10 @@ def ndict_to_csv(obj, output_path):
     return render_csv(header, tree, output_path)
 
 
-if __name__ == "__main__":
-    myFile = M3uParser()
-    url = "https://iptv-org.github.io/iptv/languages/spa.m3u"
-    myFile.parse_m3u(url)
-    # myFile.remove_by_extension('m3u8')
-    # myFile.remove_by_grpname('Zimbabwe')
-    # myFile.filter_by('tvg-language', 'Hungarian', retrieve=False)
-    print(len(myFile.get_dict()))
-    # myFile.to_file('pawan.csv')
+def ndict_to_csv(obj, output_path):
+    tree = get_tree(obj)
+    if isinstance(obj, list):
+        header = [i[0] for i in tree[0]]
+    else:
+        header = [i[0] for i in tree]
+    return render_csv(header, tree, output_path)

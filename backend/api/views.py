@@ -1,4 +1,4 @@
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, status
 from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
@@ -50,8 +50,21 @@ class ParseM3uView(APIView):
     renderer_classes = [JSONRenderer]
 
     def post(self, request, *args, **kwargs):
-        file_path = request.FILES['file'].file.name
-        file = M3uParser()
-        file.parse_m3u(file_path)
-        tv_infos = file.get_dict()
-        return Response(tv_infos)
+        if request.FILES:
+            file_path = request.FILES['file'].file.name
+            file = M3uParser()
+            file.parse_m3u(file_path)
+            tv_infos = file.get_dict()
+            return Response(tv_infos)
+        else:
+            return Response({"Error": "No file uploaded!"})
+    
+    def get(self, request, *args, **kwargs):
+        file_path = request.GET['url']
+        if file_path:
+            file = M3uParser()
+            file.parse_m3u(file_path)
+            tv_infos = file.get_dict()
+            return Response(tv_infos, status=status.HTTP_200_OK)
+        else:
+            return Response({"Error": "No file Found!"}, status=status.HTTP_404_NOT_FOUND)
