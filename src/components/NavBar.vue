@@ -2,12 +2,12 @@
   <mdb-navbar expand="large" dark color="blue" position="top">
     <mdb-navbar-brand>
       <router-link :to="{path: '/'}">
-        <img src="@/assets/brand.png" class="zoom overlay" height="45px"/>
+        <img src="@/assets/brand.png" class="zoom overlay" height="40px"/>
       </router-link>
     </mdb-navbar-brand>
     <mdb-navbar-toggler>
       <mdb-navbar-nav>
-        <mdb-nav-item href="#" active>Home</mdb-nav-item>
+        <router-link :to="{path: '/'}"><mdb-nav-item href="#" active>Home</mdb-nav-item></router-link>
         <router-link :to="{name: 'PlayUrl'}"><mdb-nav-item>Play with url</mdb-nav-item></router-link>
         <router-link :to="{name: 'ParseM3u'}"><mdb-nav-item>Parse</mdb-nav-item></router-link>
         <!-- <mdb-dropdown tag="li" class="nav-item">

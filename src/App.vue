@@ -6,16 +6,19 @@
       name="fade"
       mode="out-in"
      >
-      <router-view :key="$route.path"></router-view>
+      <router-view :key="$route.path" style="padding-bottom: 5.5rem;"></router-view>
     </transition>
+    <Footer/>
   </div>
 </template>
 
 <script>
   import NavBar from "@/components/NavBar.vue";
+  import Footer from "@/components/Footer.vue";
   export default {
     components: {
-      NavBar
+      NavBar,
+      Footer
     },
     methods: {
       beforeLeave(element) {
@@ -43,6 +46,8 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
+    position: relative;
+    min-height: 100vh;
   }
 
   #nav {
