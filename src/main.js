@@ -13,6 +13,7 @@ Vue.use(InfiniteLoading);
 Vue.use(Vuelidate);
 
 axios.defaults.baseURL = process.env.VUE_APP_BASEURL;
+axios.defaults.headers.common['Authorization'] = process.env.VUE_APP_AUTHORIZATION;
 Vue.config.productionTip = false;
 
 new Vue({

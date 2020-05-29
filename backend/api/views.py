@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from django.db.models import Count, F
+from rest_framework.permissions import IsAuthenticated
 
 from .serializers import TvInfoSerializer
 from .models import TvInfo
@@ -13,6 +14,7 @@ from .m3uParser import M3uParser
 class ListTvInfoView(viewsets.ModelViewSet):
     serializer_class = TvInfoSerializer
     pagination_class = CustomTvInfoPagination
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         infos = TvInfo.objects.order_by(self.kwargs['order'])
@@ -21,6 +23,7 @@ class ListTvInfoView(viewsets.ModelViewSet):
 
 class ListTitlesView(APIView):
     renderer_classes = [JSONRenderer]
+    permission_classes = (IsAuthenticated,)
 
     def get(self, request, *args, **kwargs):
         name = self.kwargs['name']
@@ -33,6 +36,7 @@ class ListTitlesView(APIView):
 class RetrieveByNameView(viewsets.ModelViewSet):
     serializer_class = TvInfoSerializer
     pagination_class = CustomTvInfoPagination
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         if self.kwargs['filter'] == 'country':
@@ -48,6 +52,7 @@ class RetrieveByNameView(viewsets.ModelViewSet):
 
 class ParseM3uView(APIView):
     renderer_classes = [JSONRenderer]
+    permission_classes = (IsAuthenticated,)
 
     def post(self, request, *args, **kwargs):
         if request.FILES:

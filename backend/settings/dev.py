@@ -37,11 +37,14 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'whitenoise.runserver_nostatic',  # < Per Whitenoise, to disable built in
     'django.contrib.staticfiles',
+    # Third-Party Apps
     'rest_framework',
+    'rest_framework.authtoken',
     'webpack_loader',
-    'backend.api',
     'corsheaders',
-    'django_extensions'
+    'django_extensions',
+    # Local Apps
+    'backend.api'
 ]
 
 if DEBUG:
@@ -147,3 +150,9 @@ WEBPACK_LOADER = {
 FILE_UPLOAD_HANDLERS = [
     'django.core.files.uploadhandler.TemporaryFileUploadHandler',
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',  # <-- And here
+    ],
+}
