@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build && python manage.py makemigrations && python manage.py migrate"
   },
   "dependencies": {
     "axios": "^0.19.2",
