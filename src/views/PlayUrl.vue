@@ -75,7 +75,7 @@
 				if (process.env.NODE_ENV === "production") {
 					if (protocol !== location.protocol) {
 						localStorage.setItem('url', this.videoUrl);
-						location.href = protocol + '//' + location.host
+						location.href = location.href.replace(location.protocol, protocol);
 					}
 				}
 			}
