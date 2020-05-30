@@ -3,7 +3,7 @@ import json
 import os
 import re
 import urllib3
-import requests
+# import requests
 from random import random
 from urllib.parse import urlparse
 import pycountry
@@ -20,17 +20,20 @@ class M3uParser:
         self.files = []
         self.lines = []
         self.content = ""
-        self.url_regex = r"\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]|\(([^\s()<>]+|(\([" \
-                         r"^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\"\\\/.," \
-                         r"<>?\xab\xbb\u201c\u201d\u2018\u2019]))"
+        self.url_regex = re.compile(r"^(?:(?:https?|ftp)://)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!("
+                                    r"?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,"
+                                    r"3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){"
+                                    r"2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*["
+                                    r"a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*["
+                                    r"a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:/\S*)?$")
 
     # Download the file from the given url
     def parse_m3u(self, url):
-        if urlparse(url).scheme != '' or re.search(re.compile(self.url_regex), url):
+        if urlparse(url).scheme != '' or re.search(self.url_regex, url):
             try:
                 with urllib3.PoolManager() as http:
                     self.content = http.request('GET', url).data.decode('utf-8')
-                # self.content = requests.get(url)
+                # self.content = requests.get(url).text
             except:
                 print("Cannot read anything from the url!!!")
                 exit()
@@ -52,7 +55,7 @@ class M3uParser:
 
     # Read all file lines
     def __read_all_lines(self):
-        self.lines = [line.rstrip('\n') for line in self.content.split("\n") if line != '']
+        self.lines = [line.strip('\n\r') for line in self.content.split("\n") if line.strip('\n\r') != '']
         return len(self.lines)
 
     def __parse_file(self):
@@ -64,50 +67,51 @@ class M3uParser:
 
     def __manage_line(self, n):
         line_info = self.lines[n]
-        # line_link = self.lines[n + 1]
+        line_link = ''
+        lines_link = []
         try:
-            lines_link = []
-            for i in range(1,3):
-                if re.search(re.compile(self.url_regex), self.lines[n+i]):
+            for i in [1,2]:
+                if self.lines[n+i] and re.search(self.url_regex, self.lines[n+i]):
                     lines_link.append(self.lines[n+i])
+                    break
+            line_link = lines_link[0]
         except IndexError:
             pass
-        for line_link in lines_link:
-            if line_info:
-                try:
-                    tvg_name = is_present(r"tvg-name=\"(.*?)\"", line_info)
-                    tvg_id = is_present(r"tvg-id=\"(.*?)\"", line_info)
-                    logo = is_present(r"tvg-logo=\"(.*?)\"", line_info)
-                    group = is_present(r"group-title=\"(.*?)\"", line_info)
-                    title = is_present("[,](?!.*[,])(.*?)$", line_info)
-                    country = is_present(r"tvg-country=\"(.*?)\"", line_info)
-                    language = is_present(r"tvg-language=\"(.*?)\"", line_info)
-                    tvg_url = is_present(r"tvg-url=\"(.*?)\"", line_info)
-                    country_obj = pycountry.countries.get(alpha_2=country.upper())
-                    language_obj = pycountry.languages.get(name=country.capitalize())
-                    country_name = country_obj.name if country_obj else ''
-                    language_code = language_obj.alpha_3 if language_obj else ''
-                    self.files.append({
-                        "name": title,
-                        "logo": logo,
-                        "url": line_link,
-                        "category": group,
-                        "language": {
-                            "code": language_code,
-                            "name": language,
-                        },
-                        "country": {
-                            "code": country,
-                            "name": country_name
-                        },
-                        "tvg": {
-                            "id": tvg_id,
-                            "name": tvg_name,
-                            "url": tvg_url,
-                        }
-                    })
-                except AttributeError:
-                    pass
+        if line_info and line_link:
+            try:
+                tvg_name = is_present(r"tvg-name=\"(.*?)\"", line_info)
+                tvg_id = is_present(r"tvg-id=\"(.*?)\"", line_info)
+                logo = is_present(r"tvg-logo=\"(.*?)\"", line_info)
+                group = is_present(r"group-title=\"(.*?)\"", line_info)
+                title = is_present("[,](?!.*[,])(.*?)$", line_info)
+                country = is_present(r"tvg-country=\"(.*?)\"", line_info)
+                language = is_present(r"tvg-language=\"(.*?)\"", line_info)
+                tvg_url = is_present(r"tvg-url=\"(.*?)\"", line_info)
+                country_obj = pycountry.countries.get(alpha_2=country.upper())
+                language_obj = pycountry.languages.get(name=country.capitalize())
+                country_name = country_obj.name if country_obj else ''
+                language_code = language_obj.alpha_3 if language_obj else ''
+                self.files.append({
+                    "name": title,
+                    "logo": logo,
+                    "url": line_link,
+                    "category": group,
+                    "language": {
+                        "code": language_code,
+                        "name": language,
+                    },
+                    "country": {
+                        "code": country,
+                        "name": country_name
+                    },
+                    "tvg": {
+                        "id": tvg_id,
+                        "name": tvg_name,
+                        "url": tvg_url,
+                    }
+                })
+            except AttributeError:
+                pass
 
     def filter_by(self, key, filters, retrieve=True):
         if not filters:
