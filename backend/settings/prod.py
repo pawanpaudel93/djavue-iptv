@@ -1,7 +1,7 @@
 """ Production Settings """
 import dj_database_url
 from decouple import config
-from .dev import *
+from .base import *
 
 ############
 # DATABASE #

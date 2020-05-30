@@ -7,6 +7,7 @@ verify_ssl = true
 pylint = "*"
 ipython = "*"
 jupyter = "*"
+django-extensions = "*"
 
 [packages]
 asgiref = "==3.2.7"
@@ -24,7 +25,6 @@ requests = "*"
 django-filter = "*"
 django-cors-headers = "*"
 django-decouple = "*"
-django-extensions = "*"
 
 [requires]
 python_version = "3.8"
