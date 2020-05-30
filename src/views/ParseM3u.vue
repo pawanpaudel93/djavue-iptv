@@ -31,7 +31,7 @@
 </template>
 
 <style scoped>
-    @import url("https//fonts.googleapis.com/css?family=Lato:400,700,300");
+    @import url(https://fonts.googleapis.com/css?family=Lato:400,700,300);
     body {
         font-family: 'Lato', sans-serif;
     }
