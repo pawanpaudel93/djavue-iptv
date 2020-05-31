@@ -88,7 +88,6 @@
 	import axios from 'axios'
 	import Player from "@/components/Player.vue"
 	import VLazyImage from "v-lazy-image";
-	import Url from "url-parse"
 
 	export default {
 		name: 'Channels',
@@ -128,24 +127,26 @@
 			setVideoUrl(url) {
 				this.videoUrl = url;
 				this.showModal=true;
-				let protocol = Url(this.videoUrl).protocol;
-				if (process.env.NODE_ENV === "production") {
-					if (protocol !== location.protocol) {
-						localStorage.setItem('url', this.videoUrl);
-						location.href = location.href.replace(location.protocol, protocol);
-					}
+				localStorage.removeItem("url");
+				let protocol = new URL(this.videoUrl).protocol;
+				console.log(protocol, location.protocol);
+				if ((process.env.NODE_ENV === "production") && (protocol !== location.protocol)) {
+					localStorage.setItem('url', this.videoUrl);
+					location.href = location.href.replace(location.protocol, protocol);
 				}
 			}
 		},
 		props: ["tvInfos", "type"],
 		mounted() {
-			let url = localStorage.getItem('url');
-			if (url) {
-				this.videoUrl = url;
-				this.showModal=true;
-				localStorage.removeItem("url");
+			this.$nextTick(() => {
+				let url = localStorage.getItem('url');
+				if (url) {
+					this.videoUrl = url;
+					this.showModal=true;
+					localStorage.removeItem("url");
 
-			}
+				}
+			})
 		}
 	}
 </script>
