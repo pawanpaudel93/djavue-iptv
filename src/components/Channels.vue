@@ -6,7 +6,10 @@
 			<br><br>
 			<mdb-modal size="lg" :show="showModal" @close="showModal=false" info>
 				<mdb-modal-body class="mb-0 p-0">
-					<Player :source="videoUrl"/>
+					<!-- <Player :source="videoUrl"/> -->
+					<div class="embed-responsive embed-responsive-16by9 z-depth-1-half">
+						<iframe class="embed-responsive-item" :src="videoUrl" allowfullscree></iframe>
+					</div>
 				</mdb-modal-body>
 				<mdb-modal-footer class="justify-content-center">
 					<span class="mr-4">Spread the word! <i><b>"DjaVue IPTV"</b></i></span>
@@ -125,28 +128,31 @@
 		},
 		  methods: {
 			setVideoUrl(url) {
-				this.videoUrl = url;
+				let protocol = new URL(url).protocol;
+				this.videoUrl = "https:" + process.env.VUE_APP_BASEURL + '/player?url=' + url;
 				this.showModal=true;
-				localStorage.removeItem("url");
-				let protocol = new URL(this.videoUrl).protocol;
-				console.log(protocol, location.protocol);
-				if ((process.env.NODE_ENV === "production") && (protocol !== location.protocol)) {
-					localStorage.setItem('url', this.videoUrl);
-					location.href = location.href.replace(location.protocol, protocol);
-				}
+				// this.videoUrl = url;
+				// this.showModal=true;
+				// localStorage.removeItem("url");
+				// let protocol = new URL(this.videoUrl).protocol;
+				// console.log(protocol, location.protocol);
+				// if ((process.env.NODE_ENV === "production") && (protocol !== location.protocol)) {
+				// 	localStorage.setItem('url', this.videoUrl);
+				// 	location.href = location.href.replace(location.protocol, protocol);
+				// }
 			}
 		},
 		props: ["tvInfos", "type"],
-		mounted() {
-			this.$nextTick(() => {
-				let url = localStorage.getItem('url');
-				if (url) {
-					this.videoUrl = url;
-					this.showModal=true;
-					localStorage.removeItem("url");
+		// mounted() {
+		// 	this.$nextTick(() => {
+		// 		let url = localStorage.getItem('url');
+		// 		if (url) {
+		// 			this.videoUrl = url;
+		// 			this.showModal=true;
+		// 			localStorage.removeItem("url");
 
-				}
-			})
-		}
+		// 		}
+		// 	})
+		// }
 	}
 </script>

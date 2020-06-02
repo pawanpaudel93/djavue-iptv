@@ -11,7 +11,7 @@ ALLOWED_HOSTS = ['*']
 # Application definition
 
 INSTALLED_APPS += [
-    'django_extensions',
+    'django_extensions'
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True

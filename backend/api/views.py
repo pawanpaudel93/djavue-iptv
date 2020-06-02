@@ -4,12 +4,29 @@ from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 from django.db.models import Count, F
 from rest_framework.permissions import IsAuthenticated
+from django.views.generic import TemplateView
+from django.views.decorators.clickjacking import xframe_options_exempt
 
 from .serializers import TvInfoSerializer
 from .models import TvInfo
 from .pagination import CustomTvInfoPagination
 from .m3uParser import M3uParser
 
+
+class PlayerView(TemplateView):
+    template_name='api/player.html'
+
+    @xframe_options_exempt
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+    def get_context_data(self, **kwargs):
+        url = self.request.GET['url']
+        context = super(PlayerView, self).get_context_data(**kwargs)
+        context["url"] = url
+        return context
+    
 
 class ListTvInfoView(viewsets.ModelViewSet):
     serializer_class = TvInfoSerializer

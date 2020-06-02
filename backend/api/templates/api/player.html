@@ -1,0 +1,40 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/plyr.css' %}" />
+<video controls crossorigin playsinline autoplay poster="{% static 'images/djavue_player.png' %}"></video>
+<script src="{% static 'js/hls.min.js' %}"></script>
+<script src="{% static 'js/plyr.js' %}"></script>
+
+<style>
+	html, body {
+		padding: 0;
+		margin: 0;
+		background-color: #efefef;
+	}
+</style>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+	const source = "{{ url }}";
+	const video = document.querySelector('video');
+	
+	const player = new Plyr(video);
+	
+	if (!Hls.isSupported()) {
+		console.log(Hls.isSupported())
+		video.src = source;
+	} else {
+		const hls = new Hls();
+		hls.loadSource(source);
+		hls.attachMedia(video);
+		window.hls = hls;
+		
+		// Handle changing captions
+		player.on('languagechange', () => {
+			// Caption support is still flaky. See: https://github.com/sampotts/plyr/issues/994
+			setTimeout(() => hls.subtitleTrack = player.currentTrack, 50);
+		});
+	}
+	
+	// Expose player so it can be used from the console
+	window.player = player;
+});
+</script>

@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <NavBar></NavBar>
+    <NavBar v-if="$route.name!='test1'"></NavBar>
     <br><br><br>
     <transition
       name="fade"
@@ -8,7 +8,7 @@
      >
       <router-view :key="$route.path" style="padding-bottom: 5.5rem;"></router-view>
     </transition>
-    <Footer/>
+    <Footer v-if="$route.name!='test1'"/>
   </div>
 </template>
 

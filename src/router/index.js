@@ -36,6 +36,15 @@ const routes = [
     // which is lazy-loaded when the route is visited.
     component: () =>
       import("@/views/ParseM3u.vue")
+  },
+  {
+    path: "/test1",
+    name: "test1",
+    // route level code-splitting
+    // this generates a separate chunk (about.[hash].js) for this route
+    // which is lazy-loaded when the route is visited.
+    component: () =>
+      import("@/components/test1.vue")
   }
 ];
 

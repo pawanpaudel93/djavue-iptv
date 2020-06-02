@@ -134,3 +134,5 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.TokenAuthentication',
     ],
 }
+
+X_FRAME_OPTIONS = 'SAMEORIGIN'
