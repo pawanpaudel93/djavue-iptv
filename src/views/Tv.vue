@@ -7,7 +7,7 @@
 
 <script>
 	import { mapGetters } from 'vuex'
-	import axios from 'axios'
+	import axios from '@/api/httpClient'
 	import Channels from "@/components/Channels.vue"
 
 	export default {

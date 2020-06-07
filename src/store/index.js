@@ -1,6 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
-import axios from 'axios';
+import axios from '@/api/httpClient';
 
 Vue.use(Vuex);
 
