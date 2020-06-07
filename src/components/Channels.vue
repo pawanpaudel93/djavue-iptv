@@ -49,7 +49,6 @@
 					</mdb-card>
 				</mdb-col>
 			</mdb-row>
-			<!-- <infinite-loading @infinite="infiniteHandler" spinner="waveDots"></infinite-loading> -->
 		</mdb-container>
 	</div>
 </template>
@@ -85,7 +84,8 @@
 	import { 
 			mdbCard, mdbCardImage, mdbCardBody, mdbCardTitle, mdbCardText, 
 			mdbBtn, mdbView, mdbMask, mdbContainer, mdbRow, mdbCol,
-			mdbIcon, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbNavItem
+			mdbIcon, mdbModal, mdbModalHeader, mdbModalTitle, mdbModalBody, 
+			mdbModalFooter, mdbNavItem
 			} from 'mdbvue'
 	import { mapGetters } from 'vuex'
 	import axios from '@/api/httpClient'
