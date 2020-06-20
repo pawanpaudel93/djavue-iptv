@@ -13,5 +13,8 @@ urlpatterns = [
     path('api/', include(api_urls)),
     path('admin/', admin.site.urls),
     path('player', PlayerView.as_view(), name='player'),
-    re_path(r'^.*$', TemplateView.as_view(template_name='api/index.html'), name='index'),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
+    path("api/accounts/", include("backend.accounts.urls")),
+    re_path(r'^.*$', TemplateView.as_view(template_name='api/index.html'), name='index')
 ]

@@ -19,6 +19,10 @@
           </mdb-dropdown-menu>
         </mdb-dropdown> -->
       </mdb-navbar-nav>
+      <mdb-navbar-nav right>
+        <router-link :to="{name: 'signup'}"><mdb-nav-item href="#">Sign up</mdb-nav-item></router-link>
+        <router-link :to="{name: 'signin'}"><mdb-nav-item>Sign in</mdb-nav-item></router-link>
+      </mdb-navbar-nav>
     </mdb-navbar-toggler>
   </mdb-navbar>
 </template>

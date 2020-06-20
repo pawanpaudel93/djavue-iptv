@@ -32,10 +32,13 @@ INSTALLED_APPS = [
     # Third-Party Apps
     'rest_framework',
     'rest_framework.authtoken',
+    'djoser',
+    'rest_framework_simplejwt',
     'webpack_loader',
     'corsheaders',
     # Local Apps
-    'backend.api'
+    'backend.api',
+    'backend.accounts'
 ]
 
 MIDDLEWARE = [
@@ -132,7 +135,16 @@ FILE_UPLOAD_HANDLERS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ],
 }
 
 X_FRAME_OPTIONS = 'SAMEORIGIN'
+APPEND_SLASH = True
+
+from datetime import timedelta
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+}
