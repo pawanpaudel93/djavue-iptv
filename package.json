@@ -14,6 +14,7 @@
     "core-js": "^3.6.4",
     "document-ready": "^2.0.2",
     "hls.js": "^0.13.2",
+    "jwt-decode": "^2.2.0",
     "mdbvue": "^6.7.1",
     "plyr": "^3.6.2",
     "postscribe": "^2.0.8",

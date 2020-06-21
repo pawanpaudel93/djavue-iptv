@@ -12,10 +12,34 @@
               <h3 class="dark-grey-text mb-5"><strong>Sign up</strong></h3>
             </div>
             <form @submit.prevent="signUp">
-              <mdb-input v-model="username" label="Your username" type="text" autocomplete="new-username" required/>
-              <mdb-input v-model="email" label="Your email" type="email" autocomplete="new-email" required/>
-              <mdb-input v-model="password" label="Your password" type="password" autocomplete="new-password" required/>
-              <mdb-input v-model="repeatPassword" label="Confirm your password" type="password" autocomplete="new-password" required/>
+              <mdb-input 
+                v-model="username" 
+                label="Your username" 
+                type="text" 
+                autocomplete="new-username"
+                required
+              />
+              <mdb-input 
+                v-model="email" 
+                label="Your email" 
+                type="email" 
+                autocomplete="new-email"
+                required
+              />
+              <mdb-input 
+                v-model="password" 
+                label="Your password" 
+                type="password" 
+                autocomplete="new-password"
+                required
+              />
+              <mdb-input 
+                v-model="repeatPassword"
+                label="Confirm your password"
+                type="password"
+                autocomplete="new-password"
+                required
+              />
               <div class="text-center mt-4">
                 <mdb-btn type="submit" gradient="blue" rounded class="btn-block z-depth-1a" :disabled="password.length < $v.password.$params.minLength.min || password !== repeatPassword">Sign up</mdb-btn>
               </div>
@@ -89,7 +113,7 @@
             this.username = this.email = this.password = this.repeatPassword = "";
             this.errorUsername = this.errorPassword = this.errorEmail = "";
             this.status = "Congratulations!!! Account has been created."
-            this.$router.go('/signin')
+            this.$router.push('/signin');
           })
           .catch(err => {
             console.log(err.response.data);

@@ -1,4 +1,5 @@
 import Vue from "vue";
+import store from '@/store/index';
 import VueRouter from "vue-router";
 import Home from "@/views/Home.vue";
 
@@ -17,41 +18,43 @@ const routes = [
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.
     component: () =>
-      import("@/views/Signin.vue")
+      import("@/views/Signin.vue"),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isAuthenticated) {
+        next('/');
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/signup",
     name: "signup",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
-      import("@/views/Signup.vue")
+      import("@/views/Signup.vue"),
+    beforeEnter: (to, from, next) => {
+      if (store.getters.isAuthenticated) {
+        next('/');
+      } else {
+        next();
+      }
+    }
   },
   {
     path: "/:type/:name",
     name: "Tv",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import("@/views/Tv.vue")
   },
   {
     path: "/playurl",
     name: "PlayUrl",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import("@/views/PlayUrl.vue")
   },
   {
     path: "/parsem3u",
     name: "ParseM3u",
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
     component: () =>
       import("@/views/ParseM3u.vue")
   }

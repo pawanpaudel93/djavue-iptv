@@ -19,9 +19,13 @@
           </mdb-dropdown-menu>
         </mdb-dropdown> -->
       </mdb-navbar-nav>
-      <mdb-navbar-nav right>
+      <mdb-navbar-nav right v-if="!isAuthenticated">
         <router-link :to="{name: 'signup'}"><mdb-nav-item href="#">Sign up</mdb-nav-item></router-link>
         <router-link :to="{name: 'signin'}"><mdb-nav-item>Sign in</mdb-nav-item></router-link>
+      </mdb-navbar-nav>
+      <mdb-navbar-nav right v-else>
+       <i class="fas fa-user fa-2x"></i> <mdb-nav-item href="#"> {{user}} </mdb-nav-item>
+        <mdb-nav-item @click="signOut">Logout</mdb-nav-item>
       </mdb-navbar-nav>
     </mdb-navbar-toggler>
   </mdb-navbar>
@@ -35,8 +39,15 @@
 
 <script>
   import { mdbDropdown, mdbDropdownToggle, mdbDropdownMenu, mdbDropdownItem, mdbContainer, mdbNavbar, mdbNavbarBrand, mdbNavbarToggler, mdbNavbarNav, mdbNavItem } from 'mdbvue';
+  import { mapGetters } from 'vuex';
   export default {
     name: 'NavBar',
+    computed: {
+      ...mapGetters({
+        user: 'getUser',
+        isAuthenticated: 'isAuthenticated'
+      })
+    },
     components: {
       mdbNavbar,
       mdbNavbarBrand,
@@ -48,6 +59,12 @@
       mdbDropdownToggle,
       mdbDropdownMenu,
       mdbDropdownItem
+    },
+    methods: {
+      signOut() {
+        this.$store.commit('LOGOUT');
+        if (this.$router.currentRoute.path !== '/') {this.$router.push("/")}
+      }
     }
   }
 </script>
