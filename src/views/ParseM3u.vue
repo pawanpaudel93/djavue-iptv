@@ -166,7 +166,7 @@
                     this.fileText = "Select your file!"
                 })
                 .catch(err =>{
-                    console.log(err);
+                    console.log(err.response);
                     this.fileText = "Select your file!"
                 });
             },
@@ -189,7 +189,7 @@
                     this.tvInfos = res.data;
                 })
                 .catch(err => {
-                    console.log(err);
+                    console.log(err.response);
                 })
             },
             infiniteHandler($state) {
