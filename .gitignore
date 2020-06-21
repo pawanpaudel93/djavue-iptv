@@ -149,4 +149,6 @@ yarn-error.log*
 *.sln
 *.sw*
 **/migrations/**
+!**/migrations
+!**/migrations/__init__.py
 webpack-stats.json
