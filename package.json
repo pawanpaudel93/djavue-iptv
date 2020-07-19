@@ -21,6 +21,7 @@
     "v-lazy-image": "^1.4.0",
     "vue": "^2.6.11",
     "vue-infinite-loading": "^2.4.5",
+    "vue-progressbar": "^0.7.5",
     "vue-router": "^3.1.6",
     "vue-script-component": "^0.1.7",
     "vue-upload-component": "^2.8.20",
