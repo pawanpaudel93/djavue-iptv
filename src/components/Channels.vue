@@ -45,6 +45,11 @@
 								Language: {{ tvInfo.language.name }}
 							</mdb-card-text>
 							<mdb-btn color="unique" tag="a" @click="setVideoUrl(tvInfo.url)" data-toggle="modal" data-target="#video-modal">Watch</mdb-btn>
+							<div v-if="isAuthenticated && $route.path !== '/parsem3u'">
+								<a @click="unfavourite(tvInfo)" v-if="favourites.includes(tvInfo.id)"><mdb-icon icon="heart" class="red-text pr-1" style="font-size: 1.5em;"/></a>
+								<a @click="favourite(tvInfo)" v-else><mdb-icon far icon="heart" style="font-size: 1.5em;"/></a>
+							</div>
+							<button type="button" v-if="isAuthenticated && $route.path=='/parsem3u'" :ref="tvInfo.name" @click="add(tvInfo)" class="btn btn-outline-info waves-effect">Add</button>
 						</mdb-card-body>
 					</mdb-card>
 				</mdb-col>
@@ -88,7 +93,7 @@
 			mdbModalFooter, mdbNavItem
 			} from 'mdbvue'
 	import { mapGetters } from 'vuex'
-	import axios from '@/api/httpClient'
+	import axios from '@/api/httpClient1'
 	import Player from "@/components/Player.vue"
 	import VLazyImage from "v-lazy-image";
 
@@ -97,7 +102,8 @@
 		data() {
 			return {
 				showModal: false,
-				videoUrl: ''
+				videoUrl: '',
+				states: {}
 			}
 		},
 		components: {
@@ -137,9 +143,114 @@
 					localStorage.setItem('url', this.videoUrl);
 					location.href = location.href.replace(location.protocol, protocol);
 				}
+			},
+			favourite(tvInfo) {
+				console.log(this.buttons[tvInfo.id]);
+				let config = {
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + localStorage.getItem("access"),
+							'Cache-Control': 'no-cache'
+						}
+					}
+				axios.post('/api/iptv/fav-unfav', {
+					"action": "fav",
+					"channel_id": tvInfo.id
+				}, config)
+				.then(res => {
+					console.log(res)
+					if (res.data.status == "success") {
+						console.log("fav")
+						this.favourites.push(tvInfo.id);
+						this.$store.commit('SET_FAVOURITES', this.favourites);
+						this.buttons[tvInfo.id] = true;
+					}
+				})
+				.catch(error => {
+					console.log(error)
+				})
+			},
+			unfavourite(tvInfo) {
+				console.log(this.buttons[tvInfo.id]);
+				let config = {
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + localStorage.getItem("access"),
+							'Cache-Control': 'no-cache'
+						}
+					}
+				axios.post('/api/iptv/fav-unfav', {
+					"action": "unfav",
+					"channel_id": tvInfo.id
+				}, config)
+				.then(res => {
+					console.log(res);
+					if (res.data.status == "success") {
+						console.log("unfav")
+						let id = this.favourites.indexOf(tvInfo.id);
+						if ( id != -1) {
+							this.favourites.splice(id, 1);
+						}
+						this.$store.commit('SET_FAVOURITES', this.favourites);
+						if (location.pathname === "/favourites") {
+							let tvId = this.tvInfos.map(item => item.id).indexOf(tvInfo.id);
+							if (tvId != -1) {
+								this.tvInfos.splice(tvId, 1);
+							}
+						}
+						this.buttons[tvInfo.id] = false;
+					}
+				})
+				.catch(error => {
+					console.log(error)
+				})
+			},
+			add(tvInfo) {
+				let data = {
+					name: tvInfo.name,
+					logo: tvInfo.logo,
+					url: tvInfo.url,
+					category: tvInfo.category,
+					language: tvInfo.language.name,
+					country: tvInfo.country.name
+				}
+				let config = {
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + localStorage.getItem("access"),
+							'Cache-Control': 'no-cache'
+						}
+					}
+				axios.post("/api/iptv/channels/", JSON.stringify(data), config)
+				.then(res => {
+					console.log(res);
+					if (res.status == 201) {
+						this.$refs[tvInfo.name][0].disabled = true;
+						this.$refs[tvInfo.name][0].innerText = "Added";
+					}
+				})
+				.catch(error => {
+					// console.log(error.response.data);
+					// console.log(error.response.status);
+					// console.log(error.response.headers);
+					if (error.response.status == 500 && error.response.data.error == "IntegrityError") {
+						this.$refs[tvInfo.name][0].disabled = true;
+						this.$refs[tvInfo.name][0].innerText = "Added";
+					}
+				})
 			}
 		},
 		props: ["tvInfos", "type"],
+		computed: {
+			buttons: function () {
+				this.states = {...this.states, ...this.tvInfos.reduce((acc, tvInfo) => ({...acc, [tvInfo.id]: false}),{})}
+				return this.states;
+			},
+			...mapGetters({
+				isAuthenticated: 'isAuthenticated',
+				favourites: 'getFavourites'
+			})
+		},
 		mounted() {
 			this.$nextTick(() => {
 				let url = localStorage.getItem('url');

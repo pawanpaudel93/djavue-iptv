@@ -42,6 +42,7 @@ export default {
       categories: 'getCategories',
       countries: 'getCountries',
       languages: 'getLanguages',
+      isAuthenticated: "isAuthenticated"
     }),
     radioDefault: {
       get: function() {

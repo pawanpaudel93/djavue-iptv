@@ -57,6 +57,32 @@ const routes = [
     name: "ParseM3u",
     component: () =>
       import("@/views/ParseM3u.vue")
+  },
+  {
+    path: "/favourites",
+    name: "Favourites",
+    component: () =>
+      import("@/views/Favourite.vue"),
+    beforeEnter: (to, from, next) => {
+      if (!store.getters.isAuthenticated) {
+        next('/signin');
+      } else {
+        next();
+      }
+    }
+  },
+  {
+    path: "/mychannels",
+    name: "Mychannels",
+    component: () =>
+      import("@/views/UserChannel.vue"),
+    beforeEnter: (to, from, next) => {
+      if (!store.getters.isAuthenticated) {
+        next('/signin');
+      } else {
+        next();
+      }
+    }
   }
 ];
 
