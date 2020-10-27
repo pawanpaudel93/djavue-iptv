@@ -5,4 +5,5 @@ from .models import TvInfo
 class TvInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = TvInfo
-        fields = "__all__"
+        # fields = "__all__"
+        exclude = ["user",]
