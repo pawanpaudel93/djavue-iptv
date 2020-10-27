@@ -45,11 +45,14 @@
 								Language: {{ tvInfo.language.name }}
 							</mdb-card-text>
 							<mdb-btn color="unique" tag="a" @click="setVideoUrl(tvInfo.url)" data-toggle="modal" data-target="#video-modal">Watch</mdb-btn>
-							<div v-if="isAuthenticated && $route.path !== '/parsem3u'">
+							<div v-if="isAuthenticated && $route.path !== '/parsem3u'" style="display: inline; margin-left: 5px;">
 								<a @click="unfavourite(tvInfo)" v-if="favourites.includes(tvInfo.id)"><mdb-icon icon="heart" class="red-text pr-1" style="font-size: 1.5em;"/></a>
 								<a @click="favourite(tvInfo)" v-else><mdb-icon far icon="heart" style="font-size: 1.5em;"/></a>
 							</div>
-							<button type="button" v-if="isAuthenticated && $route.path=='/parsem3u'" :ref="tvInfo.name" @click="add(tvInfo)" class="btn btn-outline-info waves-effect">Add</button>
+							<div v-if="isAuthenticated" style="display: inline; margin-left: 5px;">
+								<button type="button" v-if="$route.path=='/parsem3u'" :ref="tvInfo.name" @click="addChannel(tvInfo)" class="btn btn-outline-info waves-effect">Add</button>
+								<a v-if="$route.path=='/mychannels'" @click="removeChannel(tvInfo)"><i class="fas fa-trash" style="font-size:23px;"></i></a>
+							</div>
 						</mdb-card-body>
 					</mdb-card>
 				</mdb-col>
@@ -205,7 +208,7 @@
 					console.log(error)
 				})
 			},
-			add(tvInfo) {
+			addChannel(tvInfo) {
 				let data = {
 					name: tvInfo.name,
 					logo: tvInfo.logo,
@@ -237,6 +240,27 @@
 						this.$refs[tvInfo.name][0].disabled = true;
 						this.$refs[tvInfo.name][0].innerText = "Added";
 					}
+				})
+			},
+			removeChannel(tvInfo) {
+				let config = {
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + localStorage.getItem("access"),
+							'Cache-Control': 'no-cache'
+						}
+					}
+				axios.delete(`/api/iptv/channels/${tvInfo.id}`, config)
+				.then(res => {
+					if (res.status == 204) {
+						let tvId = this.tvInfos.map(item => item.id).indexOf(tvInfo.id);
+						if (tvId != -1) {
+							this.tvInfos.splice(tvId, 1);
+						}
+					}
+				})
+				.catch(error => {
+					console.log(error);
 				})
 			}
 		},

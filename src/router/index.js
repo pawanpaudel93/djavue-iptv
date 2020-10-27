@@ -64,6 +64,7 @@ const routes = [
     component: () =>
       import("@/views/Favourite.vue"),
     beforeEnter: (to, from, next) => {
+      store.dispatch("inspectToken");
       if (!store.getters.isAuthenticated) {
         next('/signin');
       } else {
@@ -77,6 +78,7 @@ const routes = [
     component: () =>
       import("@/views/UserChannel.vue"),
     beforeEnter: (to, from, next) => {
+      store.dispatch("inspectToken");
       if (!store.getters.isAuthenticated) {
         next('/signin');
       } else {

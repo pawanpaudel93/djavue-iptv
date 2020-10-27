@@ -98,7 +98,7 @@ class ParseM3uView(APIView):
 class TvInfoListCreateView(generics.ListCreateAPIView):
     queryset = TvInfo.objects.all()
     serializer_class = TvInfoSerializer
-    permission_classes = [IsAuthenticated,]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly,]
     pagination_class = CustomTvInfoPagination
 
     def get_queryset(self):
@@ -113,6 +113,16 @@ class TvInfoListCreateView(generics.ListCreateAPIView):
         except IntegrityError:
             content = {'error': 'IntegrityError'}
             return Response(content, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class TvInfoRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = TvInfo.objects.all()
+    serializer_class =TvInfoSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly,]
+    pagination_class = CustomTvInfoPagination
+
+    def get_queryset(self):
+        return TvInfo.objects.filter(user=self.request.user)
 
 
 class FavUnfavChannelsView(APIView):

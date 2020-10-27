@@ -68,15 +68,23 @@ const auth = {
         }
         axios.post(state.endpoints.refreshJWT, payload)
             .then(response => {
-                commit('UPDATE_ACCESS', response.data.access)
+              commit('UPDATE_ACCESS', response.data.access)
             })
             .catch(error => {
-                console.log(error.response.data)
+              console.log(error.response.data)
             })
     },
     inspectToken ({state, dispatch, commit}) {
       const accessToken = state.token.access;
       const refreshToken = state.token.refresh;
+      if (refreshToken) {
+        const decoded = jwt_decode(refreshToken);
+        const exp = decoded.exp;
+        if ((exp - (Date.now()/1000)) < 300) {
+          commit('LOGOUT');
+          router.pusx('/signin');
+        }
+      }
       if (accessToken) {
         const decoded = jwt_decode(accessToken);
         const exp = decoded.exp;
@@ -84,16 +92,8 @@ const auth = {
           dispatch('refreshToken');
         }
       }
-      if (refreshToken) {
-        const decoded = jwt_decode(refreshToken);
-        const exp = decoded.exp;
-        if ((exp - (Date.now()/1000)) < 300) {
-          commit('LOGOUT');
-          this.$router.push('/signin');
-        }
-      }
       if (!refreshToken && !accessToken) {
-        this.$router.push('/signin');
+        router.push('/signin');
       }
     }
   },
