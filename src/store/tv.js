@@ -28,7 +28,7 @@ const tv = {
           commit('SET_COUNTRIES', res.data.country)
         })
         .catch(error => {
-          console.log(error)
+          // console.log(error)
         })
     },
     setCategories ({commit}) {
@@ -37,7 +37,7 @@ const tv = {
           commit('SET_CATEGORIES', res.data.category)
         })
         .catch(error => {
-          console.log(error)
+          // console.log(error)
         })
     },
     setLanguages ({commit}) {
@@ -46,7 +46,7 @@ const tv = {
           commit('SET_LANGUAGES', res.data.language)
         })
         .catch(error => {
-          console.log(error)
+          // console.log(error)
         })
     }
   },

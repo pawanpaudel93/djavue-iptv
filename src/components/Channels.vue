@@ -161,9 +161,9 @@
 					"channel_id": tvInfo.id
 				}, config)
 				.then(res => {
-					console.log(res)
+					// console.log(res)
 					if (res.data.status == "success") {
-						console.log("fav")
+						// console.log("fav")
 						this.favourites.push(tvInfo.id);
 						this.$store.commit('SET_FAVOURITES', this.favourites);
 						this.buttons[tvInfo.id] = true;
@@ -187,9 +187,9 @@
 					"channel_id": tvInfo.id
 				}, config)
 				.then(res => {
-					console.log(res);
+					// console.log(res);
 					if (res.data.status == "success") {
-						console.log("unfav")
+						// console.log("unfav")
 						let id = this.favourites.indexOf(tvInfo.id);
 						if ( id != -1) {
 							this.favourites.splice(id, 1);

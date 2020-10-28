@@ -23,7 +23,7 @@ const profile = {
           commit('SET_FAVOURITES', res.data[0].channels)
         })
         .catch(error => {
-          console.log(error)
+          // console.log(error)
         })
     }
   },

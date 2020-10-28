@@ -17,7 +17,7 @@
                 <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
-        <mdb-input label="Enter Url" v-model="url" size="lg"/>
+        <mdb-input label="Enter m3u8 Url" v-model="url" size="lg"/>
 		<mdb-btn outline="primary" tag="a" @click="setVideoUrl(url)" data-toggle="modal" data-target="#video-modal" :disabled="!$v.url.checkUrl">Watch</mdb-btn>
     </mdb-container>
 </template>

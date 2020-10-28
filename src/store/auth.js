@@ -45,10 +45,10 @@ const auth = {
   },
   actions: {
     obtainToken({state, commit}, payload) {
-      console.log(payload);
+      // console.log(payload);
         axios.post(state.endpoints.obtainJWT, payload)
             .then(response => {
-                console.log(response);
+                // console.log(response);
                 state.errorStatus = '';
                 commit('UPDATE_TOKEN', response.data);
                 commit('SET_AUTHUSER', {
@@ -58,7 +58,7 @@ const auth = {
                 router.push("/");
             })
             .catch(error => {
-                console.log(error.response)
+                // console.log(error.response)
                 state.errorStatus = error.response.data.detail;
             })
     },
@@ -71,7 +71,7 @@ const auth = {
               commit('UPDATE_ACCESS', response.data.access)
             })
             .catch(error => {
-              console.log(error.response.data)
+              // console.log(error.response.data)
             })
     },
     inspectToken ({state, dispatch, commit}) {
