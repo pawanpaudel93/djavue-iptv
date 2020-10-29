@@ -8,6 +8,7 @@ import 'mdbvue/lib/css/mdb.min.css'
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import InfiniteLoading from 'vue-infinite-loading'
 import VueProgressBar from 'vue-progressbar'
+import Notifications from 'vue-notification'
 
 const options = {
   color: 'rgb(143, 255, 199)',
@@ -19,9 +20,16 @@ const options = {
   },
 }
 
-Vue.use(InfiniteLoading);
+Vue.use(InfiniteLoading, {
+  slots: {
+    // keep default styles
+    noResults: 'No channels...',
+    noMore: "No more channels..." 
+  }
+});
 Vue.use(Vuelidate);
-Vue.use(VueProgressBar, options)
+Vue.use(VueProgressBar, options);
+Vue.use(Notifications);
 
 Vue.config.productionTip = false;
 

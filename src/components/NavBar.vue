@@ -12,21 +12,13 @@
         <router-link :to="{name: 'ParseM3u'}"><mdb-nav-item>Parse</mdb-nav-item></router-link>
         <router-link :to="{name: 'Favourites'}" v-if="isAuthenticated"><mdb-nav-item>Favourites</mdb-nav-item></router-link>
         <router-link :to="{name: 'Mychannels'}" v-if="isAuthenticated"><mdb-nav-item>My channels</mdb-nav-item></router-link>
-        <!-- <mdb-dropdown tag="li" class="nav-item">
-          <mdb-dropdown-toggle tag="a" navLink color="stylish" slot="toggle" waves-fixed>Dropdown</mdb-dropdown-toggle>
-          <mdb-dropdown-menu>
-            <mdb-dropdown-item>Action</mdb-dropdown-item>
-            <mdb-dropdown-item>Another action</mdb-dropdown-item>
-            <mdb-dropdown-item>Something else here</mdb-dropdown-item>
-          </mdb-dropdown-menu>
-        </mdb-dropdown> -->
       </mdb-navbar-nav>
       <mdb-navbar-nav right v-if="!isAuthenticated">
         <router-link :to="{name: 'signup'}"><mdb-nav-item href="#">Sign up</mdb-nav-item></router-link>
         <router-link :to="{name: 'signin'}"><mdb-nav-item>Sign in</mdb-nav-item></router-link>
       </mdb-navbar-nav>
       <mdb-navbar-nav right v-else>
-       <i class="fas fa-user fa-2x"></i> <mdb-nav-item href="#"> {{user}} </mdb-nav-item>
+       <i class="fas fa-user" style="font-size: 2em;"></i> <mdb-nav-item href="#"> {{user}} </mdb-nav-item>
         <mdb-nav-item @click="signOut">Logout</mdb-nav-item>
       </mdb-navbar-nav>
     </mdb-navbar-toggler>

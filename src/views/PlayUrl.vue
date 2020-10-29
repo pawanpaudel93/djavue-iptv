@@ -17,8 +17,9 @@
                 <mdb-btn outline="primary" rounded size="md" class="ml-4" @click.native="showModal = false">Close</mdb-btn>
             </mdb-modal-footer>
         </mdb-modal>
+		{{$v.url}}
         <mdb-input label="Enter m3u8 Url" v-model="url" size="lg"/>
-		<mdb-btn outline="primary" tag="a" @click="setVideoUrl(url)" data-toggle="modal" data-target="#video-modal" :disabled="!$v.url.checkUrl">Watch</mdb-btn>
+		<mdb-btn outline="primary" tag="a" @click="setVideoUrl(url)" data-toggle="modal" data-target="#video-modal" :disabled="$v.url.$model && !$v.url.url">Watch</mdb-btn>
     </mdb-container>
 </template>
 
@@ -35,13 +36,9 @@
             mdbBtn, mdbView, mdbMask, mdbContainer, mdbRow, mdbCol, mdbInput, mdbIcon, mdbModal,
             mdbModalHeader, mdbModalTitle, mdbModalBody, mdbModalFooter, mdbNavItem
 			} from 'mdbvue'
-	import { required,maxLength} from 'vuelidate/lib/validators'
+	import { required, maxLength, url } from 'vuelidate/lib/validators'
 	import Player from "@/components/Player.vue"
 
-	const checkUrl = (value) => {
-		let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-		return regexp.test(value)? true:false;
-	}
 	export default {
 		name: 'PlayUrl',
 		data() {
@@ -86,7 +83,7 @@
 			url: {
 				required,
 				maxLength: maxLength(2083),
-				checkUrl
+				url
 			},
 		},
 		mounted() {

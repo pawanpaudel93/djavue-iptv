@@ -11,7 +11,7 @@
 	import Channels from "@/components/Channels.vue"
 
 	export default {
-		name: 'Tv',
+		name: 'Favourite',
 		data() {
 			return {
 				page: 1,

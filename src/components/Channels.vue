@@ -1,6 +1,7 @@
 <template>
 	<div>
 		<br>
+		<notifications group="Channel" position="bottom right"/>
 		<a @click="$router.go(-1)" id="arrow"><i class="fa fa-arrow-left fa-3x"></i></a>
 		<mdb-container>
 			<br><br>
@@ -174,7 +175,7 @@
 				})
 			},
 			unfavourite(tvInfo) {
-				console.log(this.buttons[tvInfo.id]);
+				// console.log(this.buttons[tvInfo.id]);
 				let config = {
 						headers: {
 							"Content-Type": "application/json",
@@ -202,6 +203,7 @@
 							}
 						}
 						this.buttons[tvInfo.id] = false;
+						this.show("Channel", "success", `<b>${tvInfo.name}</b> channel removed from favourites!`)
 					}
 				})
 				.catch(error => {
@@ -226,10 +228,11 @@
 					}
 				axios.post("/api/iptv/channels/", JSON.stringify(data), config)
 				.then(res => {
-					console.log(res);
+					// console.log(res);
 					if (res.status == 201) {
 						this.$refs[tvInfo.name][0].disabled = true;
 						this.$refs[tvInfo.name][0].innerText = "Added";
+						this.show("Channel", "success", `<b>${tvInfo.name}</b> channel added to favourites!`)
 					}
 				})
 				.catch(error => {
@@ -239,6 +242,7 @@
 					if (error.response.status == 500 && error.response.data.error == "IntegrityError") {
 						this.$refs[tvInfo.name][0].disabled = true;
 						this.$refs[tvInfo.name][0].innerText = "Added";
+						this.show('UserChannel', 'error', `Channel added with existing url!`);
 					}
 				})
 			},
@@ -257,12 +261,29 @@
 						if (tvId != -1) {
 							this.tvInfos.splice(tvId, 1);
 						}
+						this.show('UserChannel', 'success', `<b>${tvInfo.name}</b> channel successfully removed!`);
 					}
 				})
 				.catch(error => {
 					console.log(error);
 				})
-			}
+			},
+			show (group, type = '', context = '') {
+				const text = `
+					${context}
+					<br>
+					Date: ${new Date()}
+				`
+				this.$notify({
+					group,
+					title: `Channel Notification`,
+					text,
+					type,
+					data: {
+					randomNumber: Math.random()
+					}
+				})
+			},
 		},
 		props: ["tvInfos", "type"],
 		computed: {

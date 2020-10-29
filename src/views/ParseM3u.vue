@@ -23,7 +23,7 @@
             </div>
         </div>
         <mdb-input label="Enter Url" size="lg" v-if="radioDefault=='URL'" class="center" v-model="url"/>
-        <mdb-btn outline="primary" tag="a" @click="handleUrl" v-if="radioDefault=='URL'" :disabled="!$v.url.checkUrl">Parse</mdb-btn>
+        <mdb-btn outline="primary" tag="a" @click="handleUrl" v-if="radioDefault=='URL'" :disabled="$v.url.$model && !$v.url.url">Parse</mdb-btn>
         <br/><p style="float: right; margin-right: 150px; margin-top: 10px;">Total Channels: {{ tvInfos.length }}</p>
         <Channels :tvInfos="chunktvInfos" :type="'custom'"/>
         <infinite-loading @infinite="infiniteHandler" spinner="waveDots" v-if="tvInfos.length!=0"></infinite-loading>
@@ -121,13 +121,10 @@
 
 <script>
     import { mdbBtn, mdbContainer, mdbRow, mdbCol, mdbInput } from "mdbvue";
-    import { required,maxLength} from 'vuelidate/lib/validators'
+    import { required, maxLength, url} from 'vuelidate/lib/validators'
     import axios from "@/api/httpClient"
     import Channels from "@/components/Channels.vue"
-    const checkUrl = (value) => {
-		let regexp = /^(?:(?:https?|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
-        return regexp.test(value)? true:false;
-    }
+    
     export default {
         name: "ParseM3u",
         data(){
@@ -210,7 +207,7 @@
 			url: {
 				required,
 				maxLength: maxLength(2083),
-				checkUrl
+				url
 			},
 		}
     }
