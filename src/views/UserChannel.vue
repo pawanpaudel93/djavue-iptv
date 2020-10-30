@@ -238,9 +238,9 @@
 						if (error.response.data.error == "IntegrityError") {
 							this.show('UserChannel', 'error', `Channel exists with the url given!`);
 						}
-						console.log(error.response.data);
-						console.log(error.response.status);
-						console.log(error.response.headers);
+						// console.log(error.response.data);
+						// console.log(error.response.status);
+						// console.log(error.response.headers);
 					})	
 				}
 			}

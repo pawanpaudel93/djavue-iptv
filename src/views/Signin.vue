@@ -8,8 +8,25 @@
               <h3 class="dark-grey-text mb-5"><strong>Sign in</strong></h3>
             </div>
             <form @submit.prevent="signIn">
-              <mdb-input v-model="username" label="Your username" type="text" autocomplete="current-username" required/>
-              <mdb-input v-model="password" label="Your password" type="password" containerClass="mb-0" autocomplete="current-password" required/>
+              <mdb-input
+                v-model="username" 
+                label="Your username" 
+                type="text" 
+                autocomplete="current-username"
+                :customValidation="validated" 
+                :isValid="$v.username.required && $v.username.$model"
+                invalidFeedback="Username is required!"
+              />
+              <mdb-input
+                v-model="password" 
+                label="Your password" 
+                type="password" 
+                containerClass="mb-0" 
+                autocomplete="current-password"
+                :customValidation="validated" 
+                :isValid="$v.password.required && $v.password.$model"
+                invalidFeedback="Password is required!"
+              />
               <p class="font-small blue-text d-flex justify-content-end pb-3">Forgot <a href="#" class="blue-text ml-1"> Password?</a></p>
               <div class="text-center mb-3">
                 <mdb-btn type="submit" gradient="blue" rounded class="btn-block z-depth-1a">Sign in</mdb-btn>
@@ -36,6 +53,8 @@
 <script>
   import { mdbContainer, mdbRow, mdbCol, mdbCard, mdbCardBody, mdbInput, mdbBtn, mdbIcon, mdbModal, mdbModalBody, mdbModalFooter } from 'mdbvue';
   import { mapGetters } from 'vuex';
+  import { required } from "vuelidate/lib/validators";
+
   export default {
     name: 'Signin',
     components: {
@@ -54,7 +73,8 @@
     data() {
       return {
         username: '',
-        password: ''
+        password: '',
+        validated: false
       };
     },
     computed: {
@@ -64,6 +84,8 @@
     },
     methods: {
       signIn() {
+        this.validated = true;
+        this.$v.$touch();
         const credentials = {
           username: this.username,
           password: this.password
@@ -71,6 +93,10 @@
         this.$store.dispatch("obtainToken", credentials);
         // this.$router.push("/");
       }
+    },
+    validations: {
+      username: { required },
+      password: { required }
     }
   }
 </script>

@@ -73,6 +73,7 @@
   import { mdbContainer, mdbRow, mdbCol, mdbCard, mdbCardBody, mdbInput, mdbBtn, mdbIcon, mdbModal, mdbModalBody, mdbModalFooter } from 'mdbvue';
   import axios from '@/api/httpClient1'
   import { required, minLength, maxLength, sameAs } from 'vuelidate/lib/validators'
+  
   export default {
     name: 'Signin',
     components: {
