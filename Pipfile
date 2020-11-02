@@ -28,6 +28,7 @@ djoser = "*"
 django = "*"
 djangorestframework-simplejwt = "*"
 m3u-parser = {git = "https://github.com/pawanpaudel93/m3u_parser.git"}
+djangoql = "*"
 
 [requires]
 python_version = "3.8"

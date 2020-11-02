@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'rest_framework_simplejwt',
     'webpack_loader',
     'corsheaders',
+    'djangoql',
     # Local Apps
     'backend.api',
     'backend.accounts'
