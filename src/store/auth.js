@@ -82,7 +82,7 @@ const auth = {
         const exp = decoded.exp;
         if ((exp - (Date.now()/1000)) < 300) {
           commit('LOGOUT');
-          router.pusx('/signin');
+          router.push('/signin');
         }
       }
       if (accessToken) {
