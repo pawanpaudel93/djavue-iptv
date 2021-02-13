@@ -14,7 +14,7 @@
                 type="text" 
                 autocomplete="current-username"
                 :customValidation="validated" 
-                :isValid="$v.username.required && $v.username.$model"
+                :isValid="$v.username.required && $v.username.$model.length > 0"
                 invalidFeedback="Username is required!"
               />
               <mdb-input
@@ -24,7 +24,7 @@
                 containerClass="mb-0" 
                 autocomplete="current-password"
                 :customValidation="validated" 
-                :isValid="$v.password.required && $v.password.$model"
+                :isValid="$v.password.required && $v.password.$model.length > 0"
                 invalidFeedback="Password is required!"
               />
               <p class="font-small blue-text d-flex justify-content-end pb-3">Forgot <a href="#" class="blue-text ml-1"> Password?</a></p>

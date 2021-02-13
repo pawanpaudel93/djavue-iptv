@@ -132,7 +132,7 @@
 					let config = {
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": "Bearer " + localStorage.getItem("access"),
+							"Authorization": "Bearer " + this.accessToken,
 							'Cache-Control': 'no-cache'
 						}
 					}
@@ -201,7 +201,7 @@
 					let config = {
 							headers: {
 								"Content-Type": "application/json",
-								"Authorization": "Bearer " + localStorage.getItem("access"),
+								"Authorization": "Bearer " + this.accessToken,
 								'Cache-Control': 'no-cache'
 							}
 						}
@@ -246,8 +246,8 @@
 			}
 		},
 		computed: {
-			isError() {
-				return 
+			accessToken() {
+				return this.$store.state.auth.token.access;
 			}
 		}
 	}

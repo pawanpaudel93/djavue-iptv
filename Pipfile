@@ -27,8 +27,8 @@ django-decouple = "*"
 djoser = "*"
 django = "*"
 djangorestframework-simplejwt = "*"
-m3u-parser = {git = "https://github.com/pawanpaudel93/m3u_parser.git"}
 djangoql = "*"
+m3u-parser = "*"
 
 [requires]
 python_version = "3.8"

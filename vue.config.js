@@ -9,11 +9,14 @@ module.exports = {
 
   devServer: {
     // public: "localhost:8080",
+    proxy: "http://localhost:8000",
     headers: {
-      "Access-Control-Allow-Origin": "*"
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+      },
     },
   },
-
+  transpileDependencies: ['vuex-persist'],
   configureWebpack: {
     plugins: [
       new BundleTracker({ path: __dirname, filename: "webpack-stats.json" })

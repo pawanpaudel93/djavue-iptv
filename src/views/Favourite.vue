@@ -27,7 +27,7 @@
 				let config = {
 					headers: {
 						"Content-Type": "application/json",
-						"Authorization": "Bearer " + localStorage.getItem("access"),
+						"Authorization": "Bearer " + this.accessToken,
 						'Cache-Control': 'no-cache'
 					}
 				}
@@ -56,7 +56,10 @@
 		computed: {
 			...mapGetters({
 				isAuthenticated: "isAuthenticated"
-			})
+			}),
+			accessToken() {
+				return this.$store.state.auth.token.access;
+			}
 		},
 		created () {
 			if (this.isAuthenticated) {

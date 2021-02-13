@@ -151,7 +151,7 @@
                 let formData = new FormData();
                 formData.append('file', this.file);
 
-                axios.post( '/api/parsem3u',
+                axios.post('/api/parsem3u',
                     formData,
                     {
                     headers: {
@@ -163,7 +163,6 @@
                     this.fileText = "Select your file!"
                 })
                 .catch(err =>{
-                    console.log(err.response);
                     this.fileText = "Select your file!"
                 });
             },

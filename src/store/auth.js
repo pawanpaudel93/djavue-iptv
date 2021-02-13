@@ -5,11 +5,11 @@ import router from '@/router/index'
 
 const auth = {
   state: {
-    authUser: localStorage.getItem('user'),
-    isAuthenticated: localStorage.getItem('isAuthenticated'),
+    authUser: null,
+    isAuthenticated: null,
     token: {
-        access: localStorage.getItem('access'),
-        refresh: localStorage.getItem('refresh')
+        access: null,
+        refresh: null,
     },
     endpoints: {
       obtainJWT: "/auth/jwt/create/",
@@ -21,24 +21,16 @@ const auth = {
     'SET_AUTHUSER' (state, status) {
       state.authUser = status.username;
       state.isAuthenticated = status.isAuthenticated;
-      localStorage.setItem('user', status.username);
-      localStorage.setItem('isAuthenticated', status.isAuthenticated);
     },
     'UPDATE_ACCESS' (state, access) {
-        localStorage.setItem('access', access);
         state.token.access = access;
     },
     'UPDATE_TOKEN' (state, token) {
-        localStorage.setItem('access', token.access);
-        localStorage.setItem('refresh', token.refresh);
         state.token.access = token.access;
         state.token.refresh = token.refresh;
     },
     'LOGOUT' (state) {
-        localStorage.removeItem('access');
-        localStorage.removeItem('refresh');
-        localStorage.removeItem('user');
-        localStorage.removeItem('isAuthenticated');
+        localStorage.removeItem('rowdy');
         state.token.access = state.token.refresh = state.authUser = state.isAuthenticated = null;
         state.errorStatus = '';
     }

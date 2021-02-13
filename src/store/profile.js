@@ -10,11 +10,11 @@ const profile = {
     }
   },
   actions: {
-    setFavourites ({commit}) {
+    setFavourites ({commit, rootState}) {
       let config = {
         headers: {
           "Content-Type": "application/json",
-          "Authorization": "Bearer " + localStorage.getItem("access"),
+          "Authorization": "Bearer " + rootState.auth.token.access,
           'Cache-Control': 'no-cache'
         }
       }

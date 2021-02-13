@@ -149,11 +149,10 @@
 				}
 			},
 			favourite(tvInfo) {
-				console.log(this.buttons[tvInfo.id]);
 				let config = {
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": "Bearer " + localStorage.getItem("access"),
+							"Authorization": "Bearer " + this.accessToken,
 							'Cache-Control': 'no-cache'
 						}
 					}
@@ -179,7 +178,7 @@
 				let config = {
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": "Bearer " + localStorage.getItem("access"),
+							"Authorization": "Bearer " + this.accessToken,
 							'Cache-Control': 'no-cache'
 						}
 					}
@@ -222,7 +221,7 @@
 				let config = {
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": "Bearer " + localStorage.getItem("access"),
+							"Authorization": "Bearer " + this.accessToken,
 							'Cache-Control': 'no-cache'
 						}
 					}
@@ -250,7 +249,7 @@
 				let config = {
 						headers: {
 							"Content-Type": "application/json",
-							"Authorization": "Bearer " + localStorage.getItem("access"),
+							"Authorization": "Bearer " + this.accessToken,
 							'Cache-Control': 'no-cache'
 						}
 					}
@@ -294,7 +293,10 @@
 			...mapGetters({
 				isAuthenticated: 'isAuthenticated',
 				favourites: 'getFavourites'
-			})
+			}),
+			accessToken() {
+				return this.$store.state.auth.token.access;
+			}
 		},
 		mounted() {
 			this.$nextTick(() => {
