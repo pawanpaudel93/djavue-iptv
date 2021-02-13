@@ -9,7 +9,7 @@
     "heroku-postbuild": "npm run build && python manage.py makemigrations && python manage.py migrate"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "axios-extensions": "^3.1.3",
     "core-js": "^3.6.4",
     "document-ready": "^2.0.2",
